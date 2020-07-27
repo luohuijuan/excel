@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MybatisController {
@@ -17,8 +18,8 @@ public class MybatisController {
 
     @RequestMapping("/query")
     @ResponseBody
-    public List<User> queryUserList(){
-        List<User> users = userMapper.queryUserList();
+    public List<Map> queryUserList(){
+        List<Map> users = userMapper.queryUserList();
         return users;
     }
 
