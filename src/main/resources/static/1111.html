@@ -2,38 +2,23 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="fly,layui,jQuery,EasyUI桌面端组件,编辑表格,表格增删查改,表格,vue,react,ui,widgets,ajax,ria,web framework,web development,easy,easyui,datagrid,treegrid,tree">
-    <meta name="description" content="EasyUI是一个完整的HTML5网页框架。它提供了易于使用的组件来构建在pc和移动设备上工作的现代交互式javascript应用程序。">
+    <title>Group DataList - jQuery EasyUI Demo</title>
     <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/color.css">
     <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/demo/demo.css">
-    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
 </head>
 <body>
-
-<table data-options="url:'/query',fitColumns:true,singleSelect:true" id="dg" title="My Users" style="width:700px;height:250px"
-       toolbar="#toolbar" pagination="true" idField="id"
-       rownumbers="true" fitColumns="true" singleSelect="true">
-    <thead>
-    <tr>
-        <th field="firstname" width="50" editor="{type:'validatebox',options:{required:true}}">First Name</th>
-        <th field="lastname" width="50" editor="{type:'validatebox',options:{required:true}}">Last Name</th>
-        <th field="phone" width="50" editor="{type:'validatebox',options:{required:true}}">Phone</th>
-        <th field="email" width="50" editor="{type:'validatebox',options:{required:true,validType:'email'}}">Email</th>
-    </tr>
-    </thead>
-</table>
-<div id="toolbar">
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:$('#dg').edatagrid('addRow')">New</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="javascript:$('#dg').edatagrid('destroyRow')">Destroy</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="javascript:$('#dg').edatagrid('saveRow')">Save</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-undo" plain="true" onclick="javascript:$('#dg').edatagrid('cancelRow')">Cancel</a>
+<h2>Group DataList</h2>
+<p>This example shows how to display items in groups.</p>
+<div style="margin:20px 0"></div>
+<div class="easyui-datalist" title="Group DataList" style="width:400px;height:250px" data-options="
+			url: '/query',
+			method: 'get',
+			groupField: 'group'
+			">
 </div>
-<script type="text/javascript">
-
-</script>
-
 </body>
 </html>
