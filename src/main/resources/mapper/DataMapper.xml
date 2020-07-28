@@ -35,5 +35,6 @@
             WHERE level_marketing_distribution_chain_site.chain_type = 2
         ) AS offline_rate
         ON offline_rate.chain_id = chain.chain_id
+
     </select>
 </mapper>

@@ -1,6 +1,8 @@
 package com.excel.controller;
 
 import com.excel.mapper.DataMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +28,11 @@ public class DataController {
 
     @RequestMapping("/chain")
     @ResponseBody
-    public List<Map> queryChainList(@RequestParam("page") int pageIndex, @RequestParam("rows") int pageSize){
-        List<Map> dept = dataMapper.queryChainList(pageIndex, pageSize);
-        return dept;
+    public Object queryChainList(@RequestParam("page") int pageIndex, @RequestParam("rows") int pageSize){
+        PageHelper.startPage(pageIndex,pageSize);
+        List<Map> list= dataMapper.queryChainList();
+        PageInfo pageInfo=new PageInfo(list);
+        return pageInfo;
     }
 
 }
