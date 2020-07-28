@@ -3,6 +3,7 @@ package com.excel.controller;
 
 import com.excel.domain.User;
 import com.excel.mapper.UserMapper;
+import com.excel.util.baseConfig;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -18,18 +19,18 @@ public class LoginController {
     @Autowired
     private UserMapper userMapper;
 
+
+    @Autowired
+    private  baseConfig base;
+
     @RequestMapping("/login")
     public String lanLogin(@RequestParam("UserName")  String username, @RequestParam("Password") String password){
-
-
-        User user=userMapper.findByNamePassword(username,password);
-
-        System.out.println(username+"11111111"+password);
-        if(username.equals("18419701030it")&&password.equals("cy18419701030")){
-            System.out.println("123456789");
+        boolean boo=base.springUtil(username,password);
+        if(boo){
             return "redirect:1111.html";
+        }else {
+            return "用户名错误";
         }
-        return "用户名错误";
     }
 
 
