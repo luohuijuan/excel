@@ -1,15 +1,43 @@
 package com.excel.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.excel.mapper.DataMapper;
+import com.excel.util.ExcelUtil;
+
 @Controller
 public class ExportController {
-
+	@Autowired
+    private DataMapper dataMapper;
 
     @RequestMapping("/chainexcel")
-    public void exportChain(){
-
+    public String exportChain(){
+    	List<Map<String, Object>> list= dataMapper.queryChainList();
+    	Map<String, List<Map<String, Object>>> map = new LinkedHashMap<String, List<Map<String,Object>>>();
+    	String filename = "门店数据";
+    	map.put(filename, list);
+    	try {
+    		System.out.println(this.getClass().getResource("/").getPath() + "static/download/" + filename + ".xlsx");
+			ExcelUtil.writeExcel(map, this.getClass().getResource("/").getPath() + "static/download/" + filename + ".xlsx");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	try {
+			return "redirect:/download/" + URLEncoder.encode(filename, "UTF-8") + ".xlsx";
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return "";
+		}
     }
 
 }

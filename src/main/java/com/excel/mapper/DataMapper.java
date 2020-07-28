@@ -13,7 +13,7 @@ public interface DataMapper {
 
     public List<Map> queryDeptList();
 
-    public List<Map> queryChainList();
+    public List<Map<String, Object>> queryChainList();
 
     public List<Map> queryChainList(@Param("pageIndex") int pageIndex, @Param("pageSize") int pageSize);
 

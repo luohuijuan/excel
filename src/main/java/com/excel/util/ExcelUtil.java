@@ -17,7 +17,7 @@ public class ExcelUtil {
 		writeExcel(dataListMap, "C:\\Users\\Administrator\\Desktop/测试1.xlsx");
 	}
 	
-	private static Map<String, List<Map<String, Object>>> readExcel(String pathName) throws Exception {
+	public static Map<String, List<Map<String, Object>>> readExcel(String pathName) throws Exception {
 		Map<String, List<Map<String, Object>>> excelMap = new LinkedHashMap<String, List<Map<String,Object>>>();
 		File file = new File(pathName);
 		DataFormatter formatter = new DataFormatter();
@@ -50,7 +50,7 @@ public class ExcelUtil {
 		return excelMap;
 	}
 	
-	private static void writeExcel(Map<String, List<Map<String, Object>>> dataListMap, String fileName) throws IOException {
+	public static void writeExcel(Map<String, List<Map<String, Object>>> dataListMap, String fileName) throws IOException {
 		File excelFile = new File(fileName);
 		if(!excelFile.exists()) {
 			excelFile.createNewFile();
@@ -77,7 +77,7 @@ public class ExcelUtil {
 						Set<Entry<String, Object>> entrySet = map.entrySet();
 						for (Entry<String, Object> entry : entrySet) {
 							Cell cell = row.createCell(cellIndex++);
-							cell.setCellValue((String)entry.getValue());
+							cell.setCellValue(String.valueOf(entry.getValue()));
 						}
 					}
 				}

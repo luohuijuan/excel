@@ -5,7 +5,17 @@
 	<title>门店信息数据表</title>
 </head>
 <body>
-<table class="easyui-datagrid" title="门店信息数据表" data-options="fit:true, fitColumns:true, singleSelect:true, url:'chain', method:'get', pagination:true, pageSize:20, remoteSort:false, sortName:'门店编号', sortOrder:'asc'">
+<div id="toolbar" style="background-color:white; padding:5px;">
+	<form id="form">
+		<div><input name="id" class="easyui-numberbox" type="text" data-options="label:'门店编号'"></div>
+		<div><input name="name" class="easyui-numberbox" type="text" data-options="label:'门店名称'"></div>
+	</form>
+	<a href="#" onclick="searchData()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索查询</a>
+	<a href="#" onclick="exportData()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
+</div>
+<table id="datagrid" class="easyui-datagrid" title="门店信息数据表" data-options="toolbar:'#toolbar', fit:true, fitColumns:true, singleSelect:true, url:'chain', method:'post', pagination:true, pageSize:20, remoteSort:true, sortName:'门店编号',  sortOrder:'asc',
+onBeforeLoad:function(param){param=serializeForm();},
+loadFilter:function(data){return {total:data.total, rows:data.list}}">
 	<thead>
 		<tr>
 			<th data-options="field:'门店编号',width:10, align:'center', sortable:true">门店编号</th>

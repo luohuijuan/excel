@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>一美多数据</title>
 	<link rel="stylesheet" type="text/css" href="jquery-easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="jquery-easyui/themes/icon.css">
 	<script type="text/javascript" src="jquery-easyui/jquery.min.js"></script>
 	<script type="text/javascript" src="jquery-easyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
@@ -30,10 +31,39 @@
 $("#datalist").datalist({
 	onSelect: function(index, row) {
 		$("#layout-main").layout("panel", "center").panel("refresh", row.value);
+		$('#dg').datagrid({
+		    loadFilter: function(data){
+		        if (data.d){
+		            return data.d;
+		        } else {
+		            return data;
+		        }
+		    }
+		});
 	}
 });
 $(function(){ 
 	$("#datalist").datalist("selectRow", 5);
-}); 
+});
+function searchData() {
+	console.log("searchData");
+}
+function exportData(target) {
+	var fields = $("form").serializeArray();
+	var data = {};
+    $.each(fields, function(index, field) {
+    	data[field.name] = field.value;
+    });
+    window.open("/chainexcel?target=" + $("#datagrid").datagrid("options").title, "_blank");
+}
+function serializeForm(target) {
+	console.log("serializeForm");
+	var fields = $("form").serializeArray();
+	var data = {};
+    $.each(fields, function(index, field) {
+    	data[field.name] = field.value;
+    });
+    return data;
+}
 </script>
 </html>

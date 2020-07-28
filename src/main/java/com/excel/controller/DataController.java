@@ -30,7 +30,7 @@ public class DataController {
     @ResponseBody
     public Object queryChainList(@RequestParam("page") int pageIndex, @RequestParam("rows") int pageSize){
         PageHelper.startPage(pageIndex,pageSize);
-        List<Map> list= dataMapper.queryChainList();
+        List<Map<String, Object>> list= dataMapper.queryChainList();
         PageInfo pageInfo=new PageInfo(list);
         return pageInfo;
     }
