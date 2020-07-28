@@ -12,24 +12,26 @@ import java.util.Properties;
 @Component
 public class baseConfig {
 
+    public  boolean share;
+
     public  boolean springUtil(String name ,String password){
         Properties props = new Properties();
         while(true){
             try {
                 props= PropertiesLoaderUtils.loadAllProperties("base.properties");
-                for(Object key:props.keySet()){
-                    if(key.equals(name)&&password.equals(props.get(key))){
-                        return true;
-                    }else{
-                        return false;
-                    }
+                if(props.get("username").equals(name)&&props.get("password").equals(password)){
+                    share=true;
+                    return true;
+                }else{
+                    return false;
                 }
-
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
         }
     }
+
+
 
 
 

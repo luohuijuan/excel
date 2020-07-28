@@ -29,9 +29,7 @@ public class LoginController {
         if(boo){
             return "redirect:1111.html";
         }else {
-            return "用户名错误";
+            return "redirect:error.html";
         }
     }
-
-
 }
