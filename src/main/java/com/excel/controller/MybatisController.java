@@ -1,6 +1,7 @@
 package com.excel.controller;
 
 import com.excel.domain.User;
+import com.excel.mapper.DataMapper;
 import com.excel.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ public class MybatisController {
 
     @Autowired
     private UserMapper userMapper;
+
 
     @RequestMapping("/query")
     @ResponseBody

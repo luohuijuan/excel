@@ -10,4 +10,6 @@ public interface DataMapper {
 
     public List<Map> queryDeptList();
 
+    public List<Map> queryChainList();
+
 }

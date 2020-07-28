@@ -5,4 +5,35 @@
     <select id="queryDeptList"  resultType="java.util.LinkedHashMap">
         select * from dept
     </select>
+
+    <select id="queryChainList"  resultType="java.util.LinkedHashMap">
+        SELECT
+            chain.chain_id AS '门店编号',
+            chain.chain_name AS '门店名称',
+            chain.clerk_name AS '店主名称',
+            chain.class_name AS '门店类型',
+            chain.address AS '门店地址',
+            chain.chain_phone AS '联系电话',
+            online_rate.store_sign_discount AS '线上分销',
+            offline_rate.store_sign_discount AS '线下分销'
+        FROM chain
+        LEFT JOIN
+        (
+            SELECT
+                level_marketing_distribution_chain_site.chain_id,
+                level_marketing_distribution_chain_site.store_sign_discount
+            FROM level_marketing_distribution_chain_site
+            WHERE level_marketing_distribution_chain_site.chain_type = 1
+        ) AS online_rate
+        ON online_rate.chain_id = chain.chain_id
+        LEFT JOIN
+        (
+            SELECT
+                level_marketing_distribution_chain_site.chain_id,
+                level_marketing_distribution_chain_site.store_sign_discount
+            FROM level_marketing_distribution_chain_site
+            WHERE level_marketing_distribution_chain_site.chain_type = 2
+        ) AS offline_rate
+        ON offline_rate.chain_id = chain.chain_id
+    </select>
 </mapper>
