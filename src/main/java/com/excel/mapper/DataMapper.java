@@ -16,5 +16,14 @@ public interface DataMapper {
     public List<Map<String, Object>> queryChainList();
 
     public List<Map> queryChainList(@Param("pageIndex") int pageIndex, @Param("pageSize") int pageSize);
+    public List<Map<String, Object>> data1(@Param("pageIndex") int pageIndex, @Param("pageSize") int pageSize);
+    public List<Map<String, Object>> data2();
+    public List<Map<String, Object>> data3();
+    public List<Map<String, Object>> data4();
+    public List<Map<String, Object>> data5();
+    public List<Map<String, Object>> data6();
+    public List<Map<String, Object>> data7();
+    public List<Map<String, Object>> data8();
+    public List<Map<String, Object>> data9();
 
 }
