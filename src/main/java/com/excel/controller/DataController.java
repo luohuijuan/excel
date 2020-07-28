@@ -11,6 +11,7 @@ import java.util.Map;
 @Controller
 public class DataController {
 
+
     @Autowired
     private DataMapper dataMapper;
 
