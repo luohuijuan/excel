@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>一美多数据</title>
+	<link rel="stylesheet" type="text/css" href="jquery-easyui/themes/default/easyui.css">
+	<script type="text/javascript" src="jquery-easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery-easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+<div id="layout-main" class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'west', collapsible:true, title:'菜单'" style="width:250px;">
+		<ul id="datalist" class="easyui-datalist" data-options="fit:true">
+			<li value="data1.html">单个门店线上订单数据</li>
+			<li value="data2.html">店铺门店信息资料数据</li>
+			<li value="data3.html">多个门店线上订单数据</li>
+			<li value="data4.html">会员数据</li>
+			<li value="data5.html">门店日详细销售数据表</li>
+			<li value="data6.html">门店信息数据表</li>
+			<li value="data7.html">平台日数据表</li>
+			<li value="data8.html">线下门店扫码单个门店订单 - 副本</li>
+			<li value="data9.html">线下扫码多个店铺、门店订单数据</li>
+		</ul>
+	</div>
+	<div data-options="region:'center'"></div>
+</div>
+</body>
+<script type="text/javascript">
+$("#datalist").datalist({
+	onSelect: function(index, row) {
+		$("#layout-main").layout("panel", "center").panel("refresh", row.value);
+	}
+});
+$(function(){ 
+	$("#datalist").datalist("selectRow", 5);
+}); 
+</script>
+</html>
