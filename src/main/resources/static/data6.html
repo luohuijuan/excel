@@ -5,18 +5,26 @@
 	<title>门店信息数据表</title>
 </head>
 <body>
-<div id="toolbar" style="background-color:white; padding:5px;">
-	<!-- 
-	<form id="form">
-		<div><input name="id" class="easyui-numberbox" type="text" data-options="label:'门店编号'"></div>
-		<div><input name="name" class="easyui-numberbox" type="text" data-options="label:'门店名称'"></div>
+<div id="toolbar" style="padding:5px;">
+	<form id="form" style="margin-bottom: 1rem;">
+		<div style="display: flex; flex-wrap: wrap; justify-content:center; align-content: center;">
+			<div style="width: 40%; margin-bottom: 0.3rem;"><input name="门店编号" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'门店编号'"></div>
+			<div style="width: 40%; margin-bottom: 0.3rem;"><input name="门店名称" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'门店名称'"></div>
+			<div style="width: 40%; margin-bottom: 0.3rem;"><input name="店主名称" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'店主名称'"></div>
+			<div style="width: 40%; margin-bottom: 0.3rem;"><input name="门店类型" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'门店类型'"></div>
+			<div style="width: 40%; margin-bottom: 0.3rem;"><input name="门店地址" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'门店地址'"></div>
+			<div style="width: 40%; margin-bottom: 0.3rem;"><input name="联系电话" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'联系电话'"></div>
+			<div style="width: 40%; margin-bottom: 0.3rem;"><input name="线上分销" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'线上分销'"></div>
+			<div style="width: 40%; margin-bottom: 0.3rem;"><input name="线下分销" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'线下分销'"></div>
+		</div>
 	</form>
-	<a href="#" onclick="searchData()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索查询</a>
-	 -->
-	<a href="#" onclick="exportData()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
+	<div style="display: flex; justify-content:center; align-content: center;">
+		<a style="margin-right: 3rem;" href="#" onclick="searchData()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索查询</a>
+		<a style="margin-left: 5rem;" href="#" onclick="exportData()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
+	</div>
 </div>
 <table id="datagrid" class="easyui-datagrid" title="门店信息数据表" data-options="toolbar:'#toolbar', fit:true, fitColumns:true, singleSelect:true, url:'chain', method:'post', pagination:true, pageSize:20, remoteSort:true, sortName:'门店编号',  sortOrder:'asc',
-onBeforeLoad:function(param){param=serializeForm();},
+onBeforeLoad:function(param){param = Object.assign(param, serializeForm());},
 loadFilter:function(data){return {total:data.total, rows:data.list}}">
 	<thead>
 		<tr>

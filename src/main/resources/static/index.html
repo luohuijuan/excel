@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>一美多数据</title>
-	<link rel="stylesheet" type="text/css" href="jquery-easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="jquery-easyui/themes/black/easyui.css">
 	<link rel="stylesheet" type="text/css" href="jquery-easyui/themes/icon.css">
 	<script type="text/javascript" src="jquery-easyui/jquery.min.js"></script>
 	<script type="text/javascript" src="jquery-easyui/jquery.easyui.min.js"></script>
@@ -31,15 +31,6 @@
 $("#datalist").datalist({
 	onSelect: function(index, row) {
 		$("#layout-main").layout("panel", "center").panel("refresh", row.value);
-		$('#dg').datagrid({
-		    loadFilter: function(data){
-		        if (data.d){
-		            return data.d;
-		        } else {
-		            return data;
-		        }
-		    }
-		});
 	}
 });
 $(function(){ 
@@ -47,6 +38,10 @@ $(function(){
 });
 function searchData() {
 	console.log("searchData");
+	$("#datagrid").datagrid({
+		pageNumber: 1,
+		queryParams: serializeForm()
+	});
 }
 function exportData(target) {
 	var fields = $("form").serializeArray();
