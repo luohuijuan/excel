@@ -35,9 +35,9 @@ public class ExcelUtil {
 	}
 	
 	public static void main(String[] args) throws Exception {
-//		Map<String, List<Map<String, Object>>> dataListMap = readExcel("C:\\Users\\Administrator\\Desktop\\纳雍商家入驻.xls");
-//		dataListMap.forEach((key, value) -> System.err.println(key + ":" + dataListMap.get(key).size()));
-//		writeExcel(dataListMap, "C:\\Users\\Administrator\\Desktop/测试1.xlsx");
+		Map<String, List<Map<String, Object>>> dataListMap = readExcel("C:\\Users\\Administrator\\Desktop\\纳雍商家入驻.xls");
+		dataListMap.forEach((key, value) -> System.err.println(key + ":" + dataListMap.get(key).size()));
+		writeExcel(dataListMap, "C:\\Users\\Administrator\\Desktop/测试1.xlsx");
 	}
 	
 	public static Map<String, List<Map<String, Object>>> readExcel(String pathName) throws Exception {
