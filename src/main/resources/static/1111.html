@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../jquery-easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../jquery-easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../jquery-easyui/themes/color.css">
+    <script type="text/javascript" src="../jquery-easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../jquery-easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+<!--<div style="margin:20px 0;"></div>-->
+<div class="easyui-layout"  data-options="fit:true">
+    <!--<div data-options="region:'north'" style="height:50px"></div>-->
+    <!--<div data-options="region:'south',split:true" style="height:50px;"></div>-->
+    <!--<div data-options="region:'east',split:true" title="East" style="width:180px;">-->
+        <!--<ul class="easyui-tree" data-options="url:'/jeasyui/json/tree_data1.json',method:'get',animate:true,dnd:true"></ul>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div data-options="region:'west',split:true" title="数据" style="width:100px;">
+        <div class="easyui-panel" style="padding:5px" data-options="fit:true">
+            <ul class="easyui-tree" id="adc">
+                <li>
+                    <span>一美多数据报表</span>
+                    <ul>
+                        <li>
+                            <span>门店信息</span>
+                        </li>
+                        <li data-url="bbb">
+                            <span>Wife</span>
+                        </li>
+                        <li data-url="ccc">
+                            <span>Company</span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div  data-options="region:'center',title:'数据展示',iconCls:'icon-ok' " >
+            <!--<div title="About" data-options="href:'_content.html'" style="padding:10px"></div>-->
+                <table id="ta" class="easyui-datagrid"
+                       data-options="url:'/chain',method:'get',singleSelect:true,fit:true,fitColumns:true,toolbar:'#tb',pagination:true">
+                    <thead>
+                    <tr>
+                        <th data-options="field:'门店编号'" width="80">门店编号</th>
+                        <th data-options="field:'门店名称'" width="100">门店名称</th>
+                        <th data-options="field:'店主名称',align:'right'" width="80">店主名称</th>
+                        <th data-options="field:'门店类型',align:'right'" width="80">门店类型</th>
+                        <th data-options="field:'门店地址'" width="80">门店地址</th>
+                        <th data-options="field:'联系电话'" width="100">联系电话</th>
+                        <th data-options="field:'线上分销',align:'right'" width="80">线上分销</th>
+                        <th data-options="field:'线下分销',align:'right'" width="80">线下分销</th>
+                    </tr>
+                    </thead>
+                </table>
+                <div id="tb" style="padding:2px 5px;">
+                    Date From: <input class="easyui-datebox" style="width:110px">
+                    To: <input class="easyui-datebox" style="width:110px">
+                    Language:
+                    <select class="easyui-combobox" panelHeight="auto" style="width:100px">
+                        <option value="java">Java</option>
+                        <option value="c">C</option>
+                        <option value="basic">Basic</option>
+                        <option value="perl">Perl</option>
+                        <option value="python">Python</option>
+                    </select>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-search">Search</a>
+                </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        $('#adc').tree({
+            onClick: function(node){
+               if(node.text=='门店信息') {
+                   $('#ta').datagrid({
+                       height: 300,
+                       url: '/chain',
+                       idField: 'id',
+                       showFooter: true,
+                       columns: [
+                           getColumns()
+                        ],
+                   });
+               }else if(node.text=='Wife'){
+                   $('#ta').datagrid({
+                       height: 300,
+                       url: '/dept',
+                       idField: 'id',
+                       showFooter: true,
+                       columns: [
+                           getColumns1()
+                       ],
+                   });
+               }
+            }
+        });
+
+        function getColumns() {
+                var cols =
+                    [
+                        { field: '门店编号', title: '门店编号', width: 90 },
+                        { field: '门店编号', title: '门店编号', width: 90 },
+                        { field: '门店编号', title: '门店编号', width: 90 },
+                        { field: '门店类型', title: '门店类型', width: 90 },
+
+                        { field: '门店地址', title: '门店地址', width: 90 },
+                        { field: '联系电话', title: '联系电话', width: 90 },
+                        { field: '线上分销', title: '线上分销', width: 90 },
+                        { field: '线下分销', title: '线下分销', width: 90 }
+                    ];
+                return cols;
+            }
+
+        function getColumns1() {
+            var cols =
+                [
+                    { field: 'id', title: 'id', width: 90 },
+                    { field: 'name', title: 'name', width: 90 }
+                ];
+            return cols;
+        }
+    </script>
+</body>
+</html>

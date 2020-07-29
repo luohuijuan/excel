@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/landing")
 public class LoginController {
 
     @Autowired
@@ -24,6 +23,11 @@ public class LoginController {
     private  baseConfig base;
 
     @RequestMapping("/login")
+    public String lanLogin(){
+        return "redirect:login.html";
+    }
+
+    @RequestMapping("/log")
     public String lanLogin(@RequestParam("UserName")  String username, @RequestParam("Password") String password){
         boolean boo=base.springUtil(username,password);
         if(boo){
