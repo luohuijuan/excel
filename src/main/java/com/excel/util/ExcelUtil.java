@@ -8,13 +8,36 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ExcelUtil {
+	private static ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
+	private static class DeleteFileRunnable implements Runnable {
+		public void run() {
+			String filepath = ExcelUtil.class.getResource("/").getPath() + "static/download";
+			File rootfile = new File(filepath);
+			if(!rootfile.isDirectory()) {
+				return;
+			}
+			File[] files = rootfile.listFiles();
+			for (File file : files) {
+				if(System.currentTimeMillis() - file.lastModified() > 5 * 60 * 1000) {
+					file.delete();
+				}
+			}
+		}
+	}
+	static {
+		scheduledExecutorService.scheduleWithFixedDelay(new DeleteFileRunnable(), 0, 1, TimeUnit.MINUTES);
+	}
+	
 	public static void main(String[] args) throws Exception {
-		Map<String, List<Map<String, Object>>> dataListMap = readExcel("C:\\Users\\Administrator\\Desktop\\纳雍商家入驻.xls");
-		dataListMap.forEach((key, value) -> System.err.println(key + ":" + dataListMap.get(key).size()));
-		writeExcel(dataListMap, "C:\\Users\\Administrator\\Desktop/测试1.xlsx");
+//		Map<String, List<Map<String, Object>>> dataListMap = readExcel("C:\\Users\\Administrator\\Desktop\\纳雍商家入驻.xls");
+//		dataListMap.forEach((key, value) -> System.err.println(key + ":" + dataListMap.get(key).size()));
+//		writeExcel(dataListMap, "C:\\Users\\Administrator\\Desktop/测试1.xlsx");
 	}
 	
 	public static Map<String, List<Map<String, Object>>> readExcel(String pathName) throws Exception {

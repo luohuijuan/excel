@@ -80,8 +80,32 @@ FROM
 	LEFT JOIN store ON store.store_id = chain.store_id
 	LEFT JOIN member ON member.member_id = chain_orders.member_id
 	WHERE 1=1
+	<if test="订单类型 != null and 订单类型 != '' and 订单类型 != 0">
+	AND chain_orders.orders_type = #{订单类型}
+	</if>
+	<if test="订单状态 !=null and 订单状态 != ''">
+	AND chain_orders.orders_state = #{订单状态}
+	</if>
+	<if test="订单编号 != null and 订单编号 != ''">
+	AND chain_orders.orders_sn LIKE CONCAT('%', #{订单编号}, '%')
+	</if>
+	<if test="商品名称 != null and 商品名称 != ''">
+	AND goods_common.goods_name LIKE CONCAT('%', #{商品名称}, '%')
+	</if>
+	<if test="门店名称 != null and 门店名称 != ''">
+	AND chain.chain_name LIKE CONCAT('%', #{门店名称}, '%')
+	</if>
+	<if test="店铺名称 != null and 店铺名称 != ''">
+	AND store.store_name LIKE CONCAT('%', #{店铺名称}, '%')
+	</if>
 	<if test="下单时间_start != null and 下单时间_start != '' and 下单时间_end != null and 下单时间_end != ''">
 	AND chain_orders.create_time BETWEEN #{下单时间_start} AND #{下单时间_end}
+	</if>
+	<if test="买家编号 != null and 买家编号 != ''">
+	AND member.member_id = #{买家编号}
+	</if>
+	<if test="买家手机号 != null and 买家手机号 != ''">
+	AND member.mobile LIKE CONCAT('%', #{买家手机号}, '%')
 	</if>
 	
 	UNION ALL
@@ -117,8 +141,32 @@ FROM
 	LEFT JOIN store ON store.store_id = orders.store_id
 	LEFT JOIN member ON member.member_id = orders.member_id
 	WHERE 1=1
+	<if test="订单类型 != null and 订单类型 != '' and 订单类型 != 999">
+	AND 1=2
+	</if>
+	<if test="订单状态 !=null and 订单状态 != ''">
+	AND orders.orders_state = #{订单状态}
+	</if>
+	<if test="订单编号 != null and 订单编号 != ''">
+	AND orders.orders_sn LIKE CONCAT('%', #{订单编号}, '%')
+	</if>
+	<if test="商品名称 != null and 商品名称 != ''">
+	AND goods_common.goods_name LIKE CONCAT('%', #{商品名称}, '%')
+	</if>
+	<if test="门店名称 != null and 门店名称 != ''">
+	AND chain.chain_name LIKE CONCAT('%', #{门店名称}, '%')
+	</if>
+	<if test="店铺名称 != null and 店铺名称 != ''">
+	AND store.store_name LIKE CONCAT('%', #{店铺名称}, '%')
+	</if>
 	<if test="下单时间_start != null and 下单时间_start != '' and 下单时间_end != null and 下单时间_end != ''">
 	AND orders.create_time BETWEEN #{下单时间_start} AND #{下单时间_end}
+	</if>
+	<if test="买家编号 != null and 买家编号 != ''">
+	AND member.member_id = #{买家编号}
+	</if>
+	<if test="买家手机号 != null and 买家手机号 != ''">
+	AND member.mobile LIKE CONCAT('%', #{买家手机号}, '%')
 	</if>
 ) AS x
 WHERE (x.订单类型 = 'B2C' OR x.订单类型 = 'O2O线上')

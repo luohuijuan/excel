@@ -9,13 +9,21 @@
 	<form id="form" action="/export/data1" method="post">
 		<div style="display: none;"><input name="target" value="单个门店线上订单数据"></div>
 		<div>
-			<div><input name="下单时间_start" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'下单时间起始时间', editable:false"></div>
-			<div><input name="下单时间_end" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'下单时间截至时间', editable:false"></div>
+			<div><input name="订单类型" class="easyui-combobox" style="width: 80%;" type="text" data-options="label:'订单类型', editable:false, textField:'text', valueField:'value', data:[{text:'全部',value:0},{text:'O2O线上',value:100},{text:'B2C',value:999}]"></div>
+			<div><input name="订单状态" class="easyui-combobox" style="width: 80%;" type="text" data-options="label:'订单状态', editable:false, textField:'text', valueField:'value', data:[{text:'订单被取消',value:0},{text:'生成新订单',value:10},{text:'已支付',value:30},{text:'订单完成',value:40},{text:'已接单',value:50},{text:'已呼叫配送',value:60},{text:'待收货',value:70},{text:'待评价',value:80}], value:40"></div>
+			<div><input name="订单编号" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'订单编号', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="商品名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'商品名称', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="门店名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'门店名称', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="店铺名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'店铺名称', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="下单时间_start" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'起始时间', editable:false"></div>
+			<div><input name="下单时间_end" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'截至时间', editable:false"></div>
+			<div><input name="买家编号" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'买家编号', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="买家手机号" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'买家手机号', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
 		</div>
 	</form>
 	<div>
 		<a href="#" onclick="$('#datagrid').datagrid({pageNumber:1, queryParams:serializeForm()});" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索查询</a>
-		<a href="#" onclick="$('#form').submit()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
+		<a href="#" onclick="$('#form').submit();" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
 	</div>
 </div>
 <table id="datagrid" class="easyui-datagrid" title="单个门店线上订单数据" data-options="toolbar:'#toolbar', fit:true, fitColumns:true, singleSelect:true, url:'data1', method:'post', pagination:true, pageSize:20, remoteSort:true,
@@ -24,20 +32,19 @@ loadFilter:function(data){return {total:data.total, rows:data.list}}">
 	<thead>
 		<tr>
 			<th data-options="field:'订单类型',width:10, align:'center', sortable:true">订单类型</th>
-			<th data-options="field:'订单编号',width:20, align:'center', sortable:true">订单编号</th>
-			<th data-options="field:'订单状态',width:20, align:'center', sortable:true">订单状态</th>
+			<th data-options="field:'订单编号',width:15, align:'center', sortable:true">订单编号</th>
+			<th data-options="field:'订单状态',width:10, align:'center', sortable:true">订单状态</th>
 			<th data-options="field:'归属门店名称',width:10, align:'center', sortable:true">归属门店名称</th>
 			<th data-options="field:'归属店铺名称',width:20, align:'center', sortable:true">归属店铺名称</th>
-			<th data-options="field:'商品id',width:10, align:'center', sortable:true">商品id</th>
-			<th data-options="field:'商品名称',width:6, align:'center', sortable:true">商品名称</th>
-			<th data-options="field:'下单时间',width:6, align:'center', sortable:true">下单时间</th>
+			<th data-options="field:'商品id',width:5, align:'center', sortable:true">商品id</th>
+			<th data-options="field:'商品名称',width:10, align:'center', sortable:true">商品名称</th>
+			<th data-options="field:'下单时间',width:13, align:'center', sortable:true">下单时间</th>
 			<th data-options="field:'订单金额',width:6, align:'center', sortable:true">订单金额</th>
 			<th data-options="field:'实付现金',width:6, align:'center', sortable:true">实付现金</th>
 			<th data-options="field:'美豆抵扣',width:6, align:'center', sortable:true">美豆抵扣</th>
-			<th data-options="field:'店铺名称',width:6, align:'center', sortable:true">店铺名称</th>
-			<th data-options="field:'买家留言',width:6, align:'center', sortable:true">买家留言</th>
-			<th data-options="field:'买家编号',width:6, align:'center', sortable:true">买家编号</th>
-			<th data-options="field:'买家手机号',width:6, align:'center', sortable:true">买家手机号</th>
+			<th data-options="field:'买家留言',width:10, align:'center', sortable:true">买家留言</th>
+			<th data-options="field:'买家编号',width:5, align:'center', sortable:true">买家编号</th>
+			<th data-options="field:'买家手机号',width:10, align:'center', sortable:true">买家手机号</th>
 		</tr>
 	</thead>
 </table>
