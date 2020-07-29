@@ -64,23 +64,7 @@ $("#datalist").datalist({
 $(function(){ 
 	$("#datalist").datalist("selectRow", 5);
 });
-function searchData() {
-	console.log("searchData");
-	$("#datagrid").datagrid({
-		pageNumber: 1,
-		queryParams: serializeForm()
-	});
-}
-function exportData(target) {
-	var fields = $("form").serializeArray();
-	var data = {};
-    $.each(fields, function(index, field) {
-    	data[field.name] = field.value;
-    });
-    window.open("/chainexcel?target=" + $("#datagrid").datagrid("options").title, "_blank");
-}
 function serializeForm(target) {
-	console.log("serializeForm");
 	var fields = $("form").serializeArray();
 	var data = {};
     $.each(fields, function(index, field) {

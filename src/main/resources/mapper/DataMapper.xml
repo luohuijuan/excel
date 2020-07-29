@@ -124,7 +124,63 @@ ORDER BY x.下单时间
 	</select>
 	<select id="data5"  resultType="java.util.LinkedHashMap">
 	</select>
-	<select id="data6"  resultType="java.util.LinkedHashMap">
+	<select id="data6" parameterType="java.util.Map"  resultType="java.util.LinkedHashMap">
+SELECT * FROM
+(
+SELECT
+	chain.chain_id AS '门店编号',
+	chain.chain_name AS '门店名称',
+	chain.clerk_name AS '店主名称',
+	chain.class_name AS '门店类型',
+	chain.address AS '门店地址',
+	chain.chain_phone AS '联系电话',
+	online_rate.store_sign_discount AS '线上分销',
+	offline_rate.store_sign_discount AS '线下分销'
+FROM chain
+LEFT JOIN
+(
+	SELECT
+		level_marketing_distribution_chain_site.chain_id,
+		level_marketing_distribution_chain_site.store_sign_discount
+	FROM level_marketing_distribution_chain_site
+	WHERE level_marketing_distribution_chain_site.chain_type = 1
+) AS online_rate
+ON online_rate.chain_id = chain.chain_id
+LEFT JOIN
+(
+	SELECT
+		level_marketing_distribution_chain_site.chain_id,
+		level_marketing_distribution_chain_site.store_sign_discount
+	FROM level_marketing_distribution_chain_site
+	WHERE level_marketing_distribution_chain_site.chain_type = 2
+) AS offline_rate
+ON offline_rate.chain_id = chain.chain_id
+) AS x
+WHERE 1=1
+<if test="门店编号 != null and 门店编号 != ''">
+AND 门店编号 = #{门店编号}
+</if>
+<if test="门店名称 != null and 门店名称 != ''">
+AND 门店名称 LIKE CONCAT('%',#{门店名称},'%')
+</if>
+<if test="店主名称 != null and 店主名称 != ''">
+AND 店主名称 LIKE CONCAT('%',#{店主名称},'%')
+</if>
+<if test="门店类型 != null and 门店类型 != ''">
+AND 门店类型 LIKE CONCAT('%',#{门店类型},'%')
+</if>
+<if test="门店地址 != null and 门店地址 != ''">
+AND 门店地址 LIKE CONCAT('%',#{门店地址},'%')
+</if>
+<if test="联系电话 != null and 联系电话 != ''">
+AND 联系电话 LIKE CONCAT('%',#{联系电话},'%')
+</if>
+<if test="线上分销 != null and 线上分销 != ''">
+AND 线上分销 = #{线上分销}
+</if>
+<if test="线下分销 != null and 线下分销 != ''">
+AND 线下分销 = #{线下分销}
+</if>
 	</select>
 	<select id="data7"  resultType="java.util.LinkedHashMap">
 	</select>

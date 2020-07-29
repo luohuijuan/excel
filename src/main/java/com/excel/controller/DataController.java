@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -67,9 +68,9 @@ public class DataController {
     }
     @RequestMapping("/data6")
     @ResponseBody
-    public Object data6(@RequestParam("page") int pageIndex, @RequestParam("rows") int pageSize, @RequestParam("sort") String sortList, @RequestParam("order") String orderList){
-        PageHelper.startPage(pageIndex,pageSize);
-        List<Map<String, Object>> list= dataMapper.data6();
+    public Object data6(@RequestParam  Map<String, String> map){
+        PageHelper.startPage(Integer.valueOf(map.get("page")), Integer.valueOf(map.get("rows")));
+        List<Map<String, Object>> list= dataMapper.data6(map);
         PageInfo pageInfo=new PageInfo(list);
         return pageInfo;
     }

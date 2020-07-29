@@ -6,24 +6,25 @@
 </head>
 <body>
 <div id="toolbar" class="x-toolbar">
-	<form id="form">
+	<form id="form" action="/export/data6" method="post">
+		<div style="display: none;"><input name="target" value="门店信息数据表"></div>
 		<div>
-			<div><input name="门店编号" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'门店编号'"></div>
-			<div><input name="门店名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'门店名称'"></div>
-			<div><input name="店主名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'店主名称'"></div>
-			<div><input name="门店类型" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'门店类型'"></div>
-			<div><input name="门店地址" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'门店地址'"></div>
-			<div><input name="联系电话" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'联系电话'"></div>
-			<div><input name="线上分销" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'线上分销'"></div>
-			<div><input name="线下分销" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'线下分销'"></div>
+			<div><input name="门店编号" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'门店编号', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="门店名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'门店名称', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="店主名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'店主名称', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="门店类型" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'门店类型', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="门店地址" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'门店地址', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="联系电话" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'联系电话', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="线上分销" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'线上分销', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="线下分销" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'线下分销', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
 		</div>
 	</form>
 	<div>
-		<a href="#" onclick="searchData()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索查询</a>
-		<a href="#" onclick="exportData()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
+		<a href="#" onclick="$('#datagrid').datagrid({pageNumber:1, queryParams:serializeForm()});" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索查询</a>
+		<a href="#" onclick="$('#form').submit()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
 	</div>
 </div>
-<table id="datagrid" class="easyui-datagrid" title="门店信息数据表" data-options="toolbar:'#toolbar', fit:true, fitColumns:true, singleSelect:true, url:'chain', method:'post', pagination:true, pageSize:20, remoteSort:true, sortName:'门店编号',  sortOrder:'asc',
+<table id="datagrid" class="easyui-datagrid" title="门店信息数据表" data-options="toolbar:'#toolbar', fit:true, fitColumns:true, singleSelect:true, url:'data6', method:'post', pagination:true, pageSize:20, remoteSort:true, sortName:'门店编号',  sortOrder:'asc',
 onBeforeLoad:function(param){param = Object.assign(param, serializeForm());},
 loadFilter:function(data){return {total:data.total, rows:data.list}}">
 	<thead>

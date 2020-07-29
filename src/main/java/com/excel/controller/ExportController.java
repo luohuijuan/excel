@@ -17,19 +17,21 @@ import com.excel.mapper.DataMapper;
 import com.excel.util.ExcelUtil;
 
 @Controller
+@RequestMapping("/export")
 public class ExportController {
 	@Autowired
     private DataMapper dataMapper;
 
-    @RequestMapping("/chainexcel")
-    public String exportChain(@RequestParam("target") String target){
-    	List<Map<String, Object>> list= dataMapper.queryChainList();
-    	Map<String, List<Map<String, Object>>> map = new LinkedHashMap<String, List<Map<String,Object>>>();
-    	String filename = (target == null || (target = target.trim()).isEmpty()) ? "门店数据" : target;
-    	map.put(filename, list);
+    @RequestMapping("/data6")
+    public String data6(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap){
+    	System.out.println(target);
+    	System.out.println(parameterMap);
+        List<Map<String, Object>> list= dataMapper.data6(parameterMap);
+    	Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
+    	String filename = (target == null || (target = target.trim()).isEmpty()) ? "data6" : target;
+    	dataMap.put(filename, list);
     	try {
-    		System.out.println(this.getClass().getResource("/").getPath() + "static/download/" + filename + ".xlsx");
-			ExcelUtil.writeExcel(map, this.getClass().getResource("/").getPath() + "static/download/" + filename + ".xlsx");
+			ExcelUtil.writeExcel(dataMap, this.getClass().getResource("/").getPath() + "static/download/" + filename + ".xlsx");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
