@@ -5,17 +5,33 @@
 	<title>门店日详细销售数据表</title>
 </head>
 <body>
-<table class="easyui-datagrid" title="门店日详细销售数据表" data-options="fit:true, fitColumns:true, singleSelect:true, url:'chain', method:'get', pagination:true, pageSize:20">
+<div id="toolbar" class="x-toolbar">
+	<form id="form" action="/export/data5" method="post">
+		<div style="display: none;"><input name="target" value="门店日详细销售数据表"></div>
+		<div>
+			<div><input name="门店名称" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'门店名称', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div>
+				<input name="日期" type="text" class="easyui-datebox"  style="width: 80%;" type="text" data-options="label:'日期', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]">
+			</div>
+		</div>
+	</form>
+	<div>
+		<a href="#" onclick="$('#datagrid').datagrid({pageNumber:1, queryParams:serializeForm()});" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索查询</a>
+		<a href="#" onclick="$('#form').submit()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
+	</div>
+</div>
+<table id="datagrid" class="easyui-datagrid" title="门店日详细销售数据表" data-options="toolbar:'#toolbar',fit:true, fitColumns:true, singleSelect:true, url:'data5',
+	 method:'get', pagination:true, pageSize:20,remoteSort:true,
+	onBeforeLoad:function(param){param = Object.assign(param, serializeForm());},
+	loadFilter:function(data){return {total:data.total, rows:data.list}}">
 	<thead>
 		<tr>
-			<th data-options="field:'门店编号',width:100">门店编号</th>
 			<th data-options="field:'门店名称',width:100">门店名称</th>
-			<th data-options="field:'店主名称',width:100">店主名称</th>
-			<th data-options="field:'门店类型',width:100">门店类型</th>
-			<th data-options="field:'门店地址',width:100">门店地址</th>
-			<th data-options="field:'联系电话',width:100">联系电话</th>
-			<th data-options="field:'线上分销',width:100">线上分销</th>
-			<th data-options="field:'线下分销',width:100">线下分销</th>
+			<th data-options="field:'日期',width:100">日期</th>
+			<th data-options="field:'销售额',width:100">销售额</th>
+			<th data-options="field:'订单数',width:100">订单数</th>
+			<th data-options="field:'新增会员',width:100">新增会员</th>
+			<th data-options="field:'美豆使用数',width:100">美豆使用数</th>
 		</tr>
 	</thead>
 </table>
