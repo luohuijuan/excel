@@ -42,6 +42,26 @@ public class ExportController {
 			return "";
 		}
     }
+
+	@RequestMapping("/data8")
+	public  String data8(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap){
+		List<Map<String, Object>> list=dataMapper.data8(parameterMap);
+		Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
+		String filename = (target == null || (target = target.trim()).isEmpty()) ? "data6" : target;
+		dataMap.put(filename, list);
+		try {
+			ExcelUtil.writeExcel(dataMap, this.getClass().getResource("/").getPath() + "static/download/" + filename + ".xlsx");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			return "redirect:/download/" + URLEncoder.encode(filename, "UTF-8") + ".xlsx";
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return "";
+		}
+	};
+
 	@RequestMapping("/data9")
     public  String data9(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap){
 		List<Map<String, Object>> list=dataMapper.data9(parameterMap);

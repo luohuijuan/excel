@@ -23,7 +23,13 @@ public interface DataMapper {
     public List<Map<String, Object>> data5();
     public List<Map<String, Object>> data6(Map<String, String> map);
     public List<Map<String, Object>> data7();
-    public List<Map<String, Object>> data8();
+
+    /**
+     * 线下门店扫码单个门店订单
+     * @param map
+     * @return
+     */
+    public List<Map<String, Object>> data8(Map<String, String> map);
 
     /**
      * 0-线下扫码多个店铺、门店订单数据
