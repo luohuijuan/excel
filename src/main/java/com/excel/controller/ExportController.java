@@ -22,13 +22,34 @@ public class ExportController {
 	@Autowired
     private DataMapper dataMapper;
 
+    @RequestMapping("/data1")
+    public String data1(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap){
+    	System.out.println(target);
+    	System.out.println(parameterMap);
+        List<Map<String, Object>> list= dataMapper.data1(parameterMap);
+    	Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
+    	String filename = ((target == null || (target = target.trim()).isEmpty()) ? "data1" : target) + System.currentTimeMillis();
+    	dataMap.put(filename, list);
+    	try {
+			ExcelUtil.writeExcel(dataMap, this.getClass().getResource("/").getPath() + "static/download/" + filename + ".xlsx");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	try {
+			return "redirect:/download/" + URLEncoder.encode(filename, "UTF-8") + ".xlsx";
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return "";
+		}
+    }
+    
     @RequestMapping("/data6")
     public String data6(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap){
     	System.out.println(target);
     	System.out.println(parameterMap);
         List<Map<String, Object>> list= dataMapper.data6(parameterMap);
     	Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
-    	String filename = (target == null || (target = target.trim()).isEmpty()) ? "data6" : target;
+    	String filename = ((target == null || (target = target.trim()).isEmpty()) ? "data6" : target) + System.currentTimeMillis();
     	dataMap.put(filename, list);
     	try {
 			ExcelUtil.writeExcel(dataMap, this.getClass().getResource("/").getPath() + "static/download/" + filename + ".xlsx");

@@ -5,7 +5,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,41 +27,41 @@ public class DataController {
     }
     @RequestMapping("/data1")
     @ResponseBody
-    public Object data1(@RequestParam("page") int pageIndex, @RequestParam("rows") int pageSize, @RequestParam("sort") String sortList, @RequestParam("order") String orderList){
-        PageHelper.startPage(pageIndex, pageSize);
-        List<Map<String, Object>> list= dataMapper.data1((pageIndex - 1) * pageSize, pageSize);
+    public Object data1(@RequestParam  Map<String, String> map){
+        PageHelper.startPage(Integer.valueOf(map.get("page")), Integer.valueOf(map.get("rows")));
+        List<Map<String, Object>> list= dataMapper.data1(map);
         PageInfo pageInfo=new PageInfo(list);
         return pageInfo;
     }
     @RequestMapping("/data2")
     @ResponseBody
-    public Object data2(@RequestParam("page") int pageIndex, @RequestParam("rows") int pageSize, @RequestParam("sort") String sortList, @RequestParam("order") String orderList){
-        PageHelper.startPage(pageIndex,pageSize);
-        List<Map<String, Object>> list= dataMapper.data2();
+    public Object data2(@RequestParam  Map<String, String> map){
+        PageHelper.startPage(Integer.valueOf(map.get("page")), Integer.valueOf(map.get("rows")));
+        List<Map<String, Object>> list= dataMapper.data2(map);
         PageInfo pageInfo=new PageInfo(list);
         return pageInfo;
     }
     @RequestMapping("/data3")
     @ResponseBody
-    public Object data3(@RequestParam("page") int pageIndex, @RequestParam("rows") int pageSize, @RequestParam("sort") String sortList, @RequestParam("order") String orderList){
-        PageHelper.startPage(pageIndex,pageSize);
-        List<Map<String, Object>> list= dataMapper.data3();
+    public Object data3(@RequestParam  Map<String, String> map){
+        PageHelper.startPage(Integer.valueOf(map.get("page")), Integer.valueOf(map.get("rows")));
+        List<Map<String, Object>> list= dataMapper.data3(map);
         PageInfo pageInfo=new PageInfo(list);
         return pageInfo;
     }
     @RequestMapping("/data4")
     @ResponseBody
-    public Object data4(@RequestParam("page") int pageIndex, @RequestParam("rows") int pageSize, @RequestParam("sort") String sortList, @RequestParam("order") String orderList){
-        PageHelper.startPage(pageIndex,pageSize);
-        List<Map<String, Object>> list= dataMapper.data4();
+    public Object data4(@RequestParam  Map<String, String> map){
+        PageHelper.startPage(Integer.valueOf(map.get("page")), Integer.valueOf(map.get("rows")));
+        List<Map<String, Object>> list= dataMapper.data4(map);
         PageInfo pageInfo=new PageInfo(list);
         return pageInfo;
     }
     @RequestMapping("/data5")
     @ResponseBody
-    public Object data5(@RequestParam("page") int pageIndex, @RequestParam("rows") int pageSize, @RequestParam("sort") String sortList, @RequestParam("order") String orderList){
-        PageHelper.startPage(pageIndex,pageSize);
-        List<Map<String, Object>> list= dataMapper.data5();
+    public Object data5(@RequestParam  Map<String, String> map){
+        PageHelper.startPage(Integer.valueOf(map.get("page")), Integer.valueOf(map.get("rows")));
+        List<Map<String, Object>> list= dataMapper.data5(map);
         PageInfo pageInfo=new PageInfo(list);
         return pageInfo;
     }
@@ -76,25 +75,25 @@ public class DataController {
     }
     @RequestMapping("/data7")
     @ResponseBody
-    public Object data7(@RequestParam("page") int pageIndex, @RequestParam("rows") int pageSize, @RequestParam("sort") String sortList, @RequestParam("order") String orderList){
-        PageHelper.startPage(pageIndex,pageSize);
-        List<Map<String, Object>> list= dataMapper.data7();
+    public Object data7(@RequestParam  Map<String, String> map){
+        PageHelper.startPage(Integer.valueOf(map.get("page")), Integer.valueOf(map.get("rows")));
+        List<Map<String, Object>> list= dataMapper.data7(map);
         PageInfo pageInfo=new PageInfo(list);
         return pageInfo;
     }
     @RequestMapping("/data8")
     @ResponseBody
-    public Object data8(@RequestParam("page") int pageIndex, @RequestParam("rows") int pageSize, @RequestParam("sort") String sortList, @RequestParam("order") String orderList){
-        PageHelper.startPage(pageIndex,pageSize);
-        List<Map<String, Object>> list= dataMapper.data8();
+    public Object data8(@RequestParam  Map<String, String> map){
+        PageHelper.startPage(Integer.valueOf(map.get("page")), Integer.valueOf(map.get("rows")));
+        List<Map<String, Object>> list= dataMapper.data8(map);
         PageInfo pageInfo=new PageInfo(list);
         return pageInfo;
     }
     @RequestMapping("/data9")
     @ResponseBody
-    public Object data9(@RequestParam("page") int pageIndex, @RequestParam("rows") int pageSize, @RequestParam("sort") String sortList, @RequestParam("order") String orderList){
-        PageHelper.startPage(pageIndex,pageSize);
-        List<Map<String, Object>> list= dataMapper.data9();
+    public Object data9(@RequestParam  Map<String, String> map){
+        PageHelper.startPage(Integer.valueOf(map.get("page")), Integer.valueOf(map.get("rows")));
+        List<Map<String, Object>> list= dataMapper.data9(map);
         PageInfo pageInfo=new PageInfo(list);
         return pageInfo;
     }

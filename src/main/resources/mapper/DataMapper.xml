@@ -69,7 +69,7 @@ FROM
 		chain_orders.orders_amount + chain_orders.points_money_amount + chain_orders.freight_amount AS '订单金额',
 		chain_orders.predeposit_amount AS '实付现金',
 		chain_orders.points_money_amount AS '美豆抵扣',
-		store.store_name AS '店铺名称/自提门店名称',
+		store.store_name AS '店铺名称',
 		chain_orders.receiver_message AS '买家留言',
 		member.member_id AS '买家编号',
 		member.mobile AS '买家手机号'
@@ -79,7 +79,11 @@ FROM
 	LEFT JOIN chain ON chain.chain_id = chain_orders.chain_id
 	LEFT JOIN store ON store.store_id = chain.store_id
 	LEFT JOIN member ON member.member_id = chain_orders.member_id
-
+	WHERE 1=1
+	<if test="下单时间_start != null and 下单时间_start != '' and 下单时间_end != null and 下单时间_end != ''">
+	AND chain_orders.create_time BETWEEN #{下单时间_start} AND #{下单时间_end}
+	</if>
+	
 	UNION ALL
 
 	SELECT
@@ -103,7 +107,7 @@ FROM
 		orders.orders_amount + orders.points_money_amount + orders.freight_amount AS '订单金额',
 		orders.predeposit_amount AS '实付现金',
 		orders.points_money_amount AS '美豆抵扣',
-		store.store_name AS '店铺名称/自提门店名称',
+		store.store_name AS '店铺名称',
 		orders.receiver_message AS '买家留言',
 		member.member_id AS '买家编号',
 		member.mobile AS '买家手机号'
@@ -112,9 +116,15 @@ FROM
 	LEFT JOIN goods_common ON goods_common.common_id = orders_goods.common_id
 	LEFT JOIN store ON store.store_id = orders.store_id
 	LEFT JOIN member ON member.member_id = orders.member_id
+	WHERE 1=1
+	<if test="下单时间_start != null and 下单时间_start != '' and 下单时间_end != null and 下单时间_end != ''">
+	AND orders.create_time BETWEEN #{下单时间_start} AND #{下单时间_end}
+	</if>
 ) AS x
-WHERE (x.订单类型 = 'B2C' OR x.订单类型 = 'O2O线上') -- AND x.下单时间 BETWEEN '2020-07-27 00:00:00' AND '2020-07-27 23:59:59'
-ORDER BY x.下单时间
+WHERE (x.订单类型 = 'B2C' OR x.订单类型 = 'O2O线上')
+<if test="sort != null and sort != '' and order != null and order != ''">
+ORDER BY ${sort} ${order}
+</if>
 	</select>
 	<select id="data2"  resultType="java.util.LinkedHashMap">
 	</select>
