@@ -244,9 +244,168 @@ ORDER BY ${sort} ${order}
 </if>
 	</select>
 	<select id="data7"  resultType="java.util.LinkedHashMap">
+        SELECT
+        x.`时间/每天` AS '时间/每天',
+        SUM(x.`销售额`) AS '销售额',
+        SUM(x.`订单数`) AS '订单数',
+        SUM(x.`新增会员`) AS '新增会员',
+        SUM(x.`美豆使用数`) AS '美豆使用数',
+        SUM(x.`积美豆数`) AS '积美豆数',
+        SUM(x.`美豆使用人数`) AS '美豆使用人数',
+        SUM(x.`赠送美豆人数`) AS '赠送美豆人数'
+        FROM
+        (
+        SELECT
+        DATE_FORMAT(chain_orders.create_time, '%Y-%m-%d') AS '时间/每天',
+        SUM(chain_orders.orders_amount + chain_orders.points_money_amount) AS '销售额',
+        COUNT(DISTINCT chain_orders.orders_id) AS '订单数',
+        0 AS '新增会员',
+        0 AS '美豆使用数',
+        0 AS '积美豆数',
+        0 AS '美豆使用人数',
+        0 AS '赠送美豆人数'
+        FROM chain_orders
+        WHERE chain_orders.orders_state = 40 -- 订单完成
+        GROUP BY DATE_FORMAT(chain_orders.create_time, '%Y-%m-%d')
+
+        UNION ALL
+
+        SELECT
+        DATE_FORMAT(orders.create_time, '%Y-%m-%d') AS '时间/每天',
+        SUM(orders.orders_amount + orders.points_money_amount) AS '销售额',
+        COUNT(DISTINCT orders.orders_id) AS '订单数',
+        0 AS '新增会员',
+        0 AS '美豆使用数',
+        0 AS '积美豆数',
+        0 AS '美豆使用人数',
+        0 AS '赠送美豆人数'
+        FROM orders
+        WHERE orders.orders_state = 40 -- 订单完成
+        GROUP BY DATE_FORMAT(orders.create_time, '%Y-%m-%d')
+
+        UNION ALL
+
+        SELECT
+        DATE_FORMAT(member.register_time, '%Y-%m-%d') AS '时间/每天',
+        0 AS '销售额',
+        0 AS '订单数',
+        COUNT(DISTINCT member.member_id) AS '新增会员',
+        0 AS '美豆使用数',
+        0 AS '积美豆数',
+        0 AS '美豆使用人数',
+        0 AS '赠送美豆人数'
+        FROM member
+        GROUP BY DATE_FORMAT(member.register_time, '%Y-%m-%d')
+
+        UNION ALL
+
+        SELECT
+        DATE_FORMAT(points_log.add_time, '%Y-%m-%d') AS '时间/每天',
+        0 AS '销售额',
+        0 AS '订单数',
+        0 AS '新增会员',
+        SUM(points_log.points) AS '美豆使用数',
+        0 AS '积美豆数',
+        COUNT(DISTINCT points_log.member_id) AS '美豆使用人数',
+        0 AS '赠送美豆人数'
+        FROM points_log
+        WHERE points_log.points &lt; 0
+        GROUP BY DATE_FORMAT(points_log.add_time, '%Y-%m-%d')
+
+        UNION ALL
+
+        SELECT
+        DATE_FORMAT(points_log.add_time, '%Y-%m-%d') AS '时间/每天',
+        0 AS '销售额',
+        0 AS '订单数',
+        0 AS '新增会员',
+        0 AS '美豆使用数',
+        SUM(points_log.points) AS '积美豆数',
+        0 AS '美豆使用人数',
+        COUNT(DISTINCT points_log.member_id) AS '赠送美豆人数'
+        FROM points_log
+        WHERE points_log.points > 0
+        GROUP BY DATE_FORMAT(points_log.add_time, '%Y-%m-%d')
+        ) AS x
+        WHERE 1=1
+        GROUP BY x.`时间/每天`
+        order by   x.`时间/每天` desc
 	</select>
 	<select id="data8"  resultType="java.util.LinkedHashMap">
+		SELECT
+		chain_orders.create_time AS '创建订单时间',
+		-- seller.seller_name AS '商家名称',
+		-- store.store_name AS '店铺名称',
+		chain.chain_name AS '门店名称',
+		member.member_name AS '会员名称',
+		member.mobile AS '会员电话号码',
+		CASE chain_orders.orders_type
+		WHEN 100 THEN 'O2O线上'
+		WHEN 101 THEN 'O2O线下'
+		WHEN 102 THEN 'O2O线下扫码'
+		END AS '订单类型',
+		chain_orders.orders_sn AS '订单编号',
+		CASE chain_orders.payment_code
+		WHEN 'predeposit' THEN '收益'
+		WHEN 'wxpay' THEN '微信'
+		WHEN 'alipay' THEN '支付宝'
+		WHEN 'yunpay' THEN '云闪付'
+		WHEN 'kangfutong' THEN '康付通'
+		WHEN 'pinganjiankangka' THEN '平安健康卡'
+		WHEN 'offline' THEN '货到付款'
+		WHEN 'chain' THEN '门店付款'
+		END AS '支付方式',
+		CASE chain_orders.orders_state
+		WHEN 0 THEN '订单被取消'
+		WHEN 10 THEN '生成新订单'
+		WHEN 30 THEN '已支付'
+		WHEN 40 THEN '订单完成'
+		WHEN 50 THEN '已接单'
+		WHEN 60 THEN '已呼叫配送'
+		WHEN 70 THEN '待收货'
+		WHEN 80 THEN '待评价'
+		END AS '订单状态',
+		(chain_orders.orders_amount+chain_orders.points_money_amount+chain_orders.coupon_amount) AS '订单总金额',
+		FORMAT(chain_orders.orders_amount+chain_orders.points_money_amount+chain_orders.coupon_amount - (FLOOR((chain_orders.orders_amount+chain_orders.points_money_amount+chain_orders.coupon_amount) * 0.13) / 100), 2) AS '预期到账金额',
+		chain_orders.orders_amount AS '现金支付金额',
+		chain_orders.points_money_amount AS '美豆抵扣金额',
+		chain_orders.coupon_amount AS '平台券抵扣金额',
+		'暂时无法统计' AS '订单消费返美豆'
+		FROM chain_orders
+		LEFT JOIN chain ON chain.chain_id = chain_orders.chain_id
+		LEFT JOIN store ON store.store_id = chain.store_id
+		LEFT JOIN seller ON seller.seller_id = store.seller_id
+		LEFT JOIN member ON member.member_id = chain_orders.member_id
+		WHERE chain_orders.orders_type = 102
+		AND chain.chain_name != ''
+		<if test="创建订单开始时间 != null and 创建订单开始时间 != ''and 创建订单结束时间 != null and 创建订单结束时间 != ''">
+		AND chain_orders.create_time BETWEEN #{创建订单开始时间} AND #{创建订单结束时间}
+		</if>
+		<if test="会员名称 != null and 会员名称 != ''">
+			AND member.member_name=#{会员名称}
+		</if>
+		<if test="门店名称 != null and 门店名称 != ''">
+		AND chain.chain_name=#{门店名称}
+		</if>
+		<if test="会员电话号码 != null and 会员电话号码 != ''">
+			AND member.mobile=#{会员电话号码}
+		</if>
+		<if test="订单编号 != null and 订单编号 != ''">
+			AND chain_orders.orders_sn=#{订单编号}
+		</if>
+		<if test="订单类型 != null and 订单类型 != ''">
+			AND chain_orders.orders_type=#{订单类型}
+		</if>
+		<if test="支付方式 != null and 支付方式 != ''">
+			AND chain_orders.payment_code=#{支付方式}
+		</if>
+		<if test="订单状态 != null and 订单状态 != ''">
+			AND chain_orders.orders_state=#{订单状态}
+		</if>
+
+		ORDER BY chain.chain_name, chain_orders.create_time
 	</select>
+
 	<select id="data9"  resultType="java.util.LinkedHashMap">
 		SELECT t.*,FLOOR(t.`现金支付金额`*l.alone_consumer_rate)/100 as '订单消费返美豆'  from
 (SELECT

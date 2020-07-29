@@ -19,6 +19,7 @@ public class DataController {
     @Autowired
     private DataMapper dataMapper;
 
+
     @RequestMapping("/dept")
     @ResponseBody
     public List<Map> queryDeptList(){

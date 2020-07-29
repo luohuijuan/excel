@@ -22,7 +22,19 @@ public interface DataMapper {
     public List<Map<String, Object>> data4(Map<String, String> map);
     public List<Map<String, Object>> data5(Map<String, String> map);
     public List<Map<String, Object>> data6(Map<String, String> map);
+
+    /**
+     * 平台日数据表
+     * @param map
+     * @return
+     */
     public List<Map<String, Object>> data7(Map<String, String> map);
+
+    /**
+     * 线下门店扫码单个门店订单
+     * @param map
+     * @return
+     */
     public List<Map<String, Object>> data8(Map<String, String> map);
 
     /**
