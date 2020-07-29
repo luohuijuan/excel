@@ -16,13 +16,13 @@ public interface DataMapper {
     public List<Map<String, Object>> queryChainList();
 
     public List<Map> queryChainList(@Param("pageIndex") int pageIndex, @Param("pageSize") int pageSize);
-    public List<Map<String, Object>> data1(@Param("pageIndex") int pageIndex, @Param("pageSize") int pageSize);
-    public List<Map<String, Object>> data2();
-    public List<Map<String, Object>> data3();
-    public List<Map<String, Object>> data4();
-    public List<Map<String, Object>> data5();
+    public List<Map<String, Object>> data1(Map<String, String> map);
+    public List<Map<String, Object>> data2(Map<String, String> map);
+    public List<Map<String, Object>> data3(Map<String, String> map);
+    public List<Map<String, Object>> data4(Map<String, String> map);
+    public List<Map<String, Object>> data5(Map<String, String> map);
     public List<Map<String, Object>> data6(Map<String, String> map);
-    public List<Map<String, Object>> data7();
+    public List<Map<String, Object>> data7(Map<String, String> map);
 
     /**
      * 线下门店扫码单个门店订单

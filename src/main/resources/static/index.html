@@ -36,6 +36,24 @@
 	margin-right: 5rem;
 }
 </style>
+<script type="text/javascript">
+/*
+$.fn.datetimebox.defaults.formatter = function(datetime){
+	var year = datetime.getFullYear();
+	var month = datetime.getMonth() + 1;
+	month = month >= 10 ? month : ("0" + month);
+	var date = datetime.getDate();
+	date = date >= 10 ? date : ("0" + date);
+	var hour = datetime.getHours();
+	hour = hour >= 10 ? hour : ("0" + hour);
+	var minute = datetime.getMinutes();
+	minute = minute >= 10 ? minute : ("0" + minute);
+	var second = datetime.getSeconds();
+	second = second >= 10 ? second : ("0" + second);
+    return year + '-' + month + '-' + date + " " + hour + ":" + minute + ":" + second;
+}
+*/
+</script>
 </head>
 <body>
 <div id="layout-main" class="easyui-layout" data-options="fit:true">
@@ -62,7 +80,7 @@ $("#datalist").datalist({
 	}
 });
 $(function(){ 
-	$("#datalist").datalist("selectRow", 5);
+	$("#datalist").datalist("selectRow", 0);
 });
 function serializeForm(target) {
 	var fields = $("form").serializeArray();
