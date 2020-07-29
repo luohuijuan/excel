@@ -7,7 +7,7 @@
 <body>
 <div id="toolbar" class="x-toolbar">
 	<form id="form" action="/export/data2" method="post">
-		<div style="display: none;"><input name="target" value="单个门店线上订单数据"></div>
+		<div style="display: none;"><input name="target" value="店铺门店信息资料数据"></div>
 		<div>
 			<div><input name="店铺编号" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'店铺编号', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
 			<div><input name="店铺名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'店铺名称', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
@@ -19,7 +19,7 @@
 			<div><input name="开店时间_end" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'开店截至', editable:false, icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).datetimebox('clear');}}]"></div>
 			<div><input name="过期时间_start" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'过期起始', editable:false, icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).datetimebox('clear');}}]"></div>
 			<div><input name="过期时间_end" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'过期截至', editable:false, icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).datetimebox('clear');}}]"></div>
-			<div><input name="分销比例" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'分销比例', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="分销比例" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'分销比例', precision:2, icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
 			<div><label class="textbox-label" style="">结算周期</label><input name="结算周期_num" class="easyui-numberbox" style="width: 30%;" type="text" data-options="icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"><input name="结算周期_unit" class="easyui-combobox" style="width: 30%;" type="text" data-options="editable:false, textField:'text', valueField:'value', data:[{text:'全部',value:0},{text:'月',value:1},{text:'天',value:2}], value:0"></div>
 		</div>
 	</form>

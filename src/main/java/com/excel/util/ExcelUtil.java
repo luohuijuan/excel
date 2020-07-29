@@ -13,15 +13,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ExcelUtil {
+	public static String downloadPath = ExcelUtil.class.getResource("/").getPath() + "static" + File.separator +"download";
 	private static ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
 	private static class DeleteFileRunnable implements Runnable {
 		public void run() {
-			String filepath = ExcelUtil.class.getResource("/").getPath() + "static/download";
-			File rootfile = new File(filepath);
-			if(!rootfile.isDirectory()) {
-				return;
-			}
+			File rootfile = new File(downloadPath);
 			File[] files = rootfile.listFiles();
 			for (File file : files) {
 				if(System.currentTimeMillis() - file.lastModified() > 5 * 60 * 1000) {
