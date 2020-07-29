@@ -5,17 +5,79 @@
 	<title>线下扫码多个店铺、门店订单数据</title>
 </head>
 <body>
-<table class="easyui-datagrid" title="线下扫码多个店铺、门店订单数据" data-options="fit:true, fitColumns:true, singleSelect:true, url:'chain', method:'get', pagination:true, pageSize:20">
+<div id="toolbar" class="x-toolbar">
+	<form id="form" action="/export/data9" method="post">
+		<div style="display: none;"><input name="target" value="线下扫码多个店铺、门店订单数据"></div>
+		<div>
+			<div><input name="chain_id" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'门店编号', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="门店名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'门店名称', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div>
+				<input name="创建订单开始时间" type="text" class="easyui-datebox"  style="width: 80%;" type="text" data-options="label:'开始时间', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]">
+			</div>
+			<div>
+				<input name="创建订单结束时间" type="text" class="easyui-datebox"  style="width: 80%;" type="text" data-options="label:'结束时间', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]">
+			</div>
+			<div>
+			<select class="easyui-combobox" name="订单类型" style="width:410px;"  data-options="label:'订单类型', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]">
+				<option value=""></option>
+				<option value="O2O线下扫码">O2O线下扫码</option>
+				<option value="O2O线上">O2O线上</option>
+				<option value="O2O线下">O2O线下</option>
+			</select>
+			</div>
+			<div><input name="订单编号" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'订单编号', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div>
+				<select class="easyui-combobox" name="支付方式" style="width:410px;" data-options="label:'支付方式', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]">
+				<option value=""></option>
+				<option value="收益">收益</option>
+				<option value="微信">微信</option>
+				<option value="支付宝">支付宝</option>
+				<option value="云闪付">云闪付</option>
+				<option value="康付通">康付通</option>
+				<option value="平安健康卡">平安健康卡</option>
+				<option value="货到付款">货到付款</option>
+				<option value="门店付款">门店付款</option>
+			</select>
+			</div>
+			<div>
+			<select class="easyui-combobox" name="订单状态" style="width:410px;" data-options="label:'订单状态', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]">
+				<option value=""></option>
+				<option value="订单被取消">订单被取消</option>
+				<option value="生成新订单">生成新订单</option>
+				<option value="已支付">已支付</option>
+				<option value="订单完成">订单完成</option>
+				<option value="已接单">已接单</option>
+				<option value="已呼叫配送">已呼叫配送</option>
+				<option value="待收货">待收货</option>
+				<option value="待评价">待评价</option>
+			</select>
+			</div>
+		</div>
+	</form>
+	<div>
+		<a href="#" onclick="$('#datagrid').datagrid({pageNumber:1, queryParams:serializeForm()});" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索查询</a>
+		<a href="#" onclick="$('#form').submit()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
+	</div>
+</div>
+<table id="datagrid" class="easyui-datagrid" title="线下扫码多个店铺、门店订单数据" data-options="toolbar:'#toolbar',fit:true, fitColumns:true, singleSelect:true, url:'data9',
+ method:'get', pagination:true, pageSize:20,remoteSort:true, sortName:'门店编号',  sortOrder:'asc',
+onBeforeLoad:function(param){param = Object.assign(param, serializeForm());},
+loadFilter:function(data){return {total:data.total, rows:data.list}}">
 	<thead>
 		<tr>
-			<th data-options="field:'门店编号',width:100">门店编号</th>
+			<th data-options="field:'chain_id',width:100">门店编号</th>
 			<th data-options="field:'门店名称',width:100">门店名称</th>
-			<th data-options="field:'店主名称',width:100">店主名称</th>
-			<th data-options="field:'门店类型',width:100">门店类型</th>
-			<th data-options="field:'门店地址',width:100">门店地址</th>
-			<th data-options="field:'联系电话',width:100">联系电话</th>
-			<th data-options="field:'线上分销',width:100">线上分销</th>
-			<th data-options="field:'线下分销',width:100">线下分销</th>
+			<th data-options="field:'创建订单时间',width:100">创建订单时间</th>
+			<th data-options="field:'订单类型',width:100">订单类型</th>
+			<th data-options="field:'订单编号',width:100">订单编号</th>
+			<th data-options="field:'支付方式',width:100">支付方式</th>
+			<th data-options="field:'订单状态',width:100">订单状态</th>
+			<th data-options="field:'订单总金额',width:100">订单总金额</th>
+			<th data-options="field:'预期到账金额',width:100">预期到账金额</th>
+			<th data-options="field:'现金支付金额',width:100">现金支付金额</th>
+			<th data-options="field:'美豆抵扣金额',width:100">美豆抵扣金额</th>
+			<th data-options="field:'平台券抵扣金额',width:100">平台券抵扣金额</th>
+			<th data-options="field:'订单消费返美豆',width:100">订单消费返美豆</th>
 		</tr>
 	</thead>
 </table>

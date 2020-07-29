@@ -92,9 +92,10 @@ public class DataController {
     }
     @RequestMapping("/data9")
     @ResponseBody
-    public Object data9(@RequestParam("page") int pageIndex, @RequestParam("rows") int pageSize, @RequestParam("sort") String sortList, @RequestParam("order") String orderList){
-        PageHelper.startPage(pageIndex,pageSize);
-        List<Map<String, Object>> list= dataMapper.data9();
+    public Object data9(@RequestParam  Map<String, String> map){
+
+        PageHelper.startPage(Integer.valueOf(map.get("page")), Integer.valueOf(map.get("rows")));
+        List<Map<String, Object>> list= dataMapper.data9(map);
         PageInfo pageInfo=new PageInfo(list);
         return pageInfo;
     }
