@@ -181,6 +181,9 @@ AND 线上分销 = #{线上分销}
 <if test="线下分销 != null and 线下分销 != ''">
 AND 线下分销 = #{线下分销}
 </if>
+<if test="sort != null and sort != '' and order != null and order != ''">
+ORDER BY ${sort} ${order}
+</if>
 	</select>
 	<select id="data7"  resultType="java.util.LinkedHashMap">
 	</select>
