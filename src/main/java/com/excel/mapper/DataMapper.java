@@ -20,6 +20,12 @@ public interface DataMapper {
     public List<Map<String, Object>> data2(Map<String, String> map);
     public List<Map<String, Object>> data3(Map<String, String> map);
     public List<Map<String, Object>> data4(Map<String, String> map);
+
+    /**
+     * 门店日详细销售数据表
+     * @param map
+     * @return
+     */
     public List<Map<String, Object>> data5(Map<String, String> map);
     public List<Map<String, Object>> data6(Map<String, String> map);
 

@@ -245,7 +245,58 @@ ORDER BY ${sort} ${order}
 	<select id="data4"  resultType="java.util.LinkedHashMap">
 	</select>
 	<select id="data5"  resultType="java.util.LinkedHashMap">
-	</select>
+    SELECT
+	chain.chain_name AS '门店名称',
+	x.日期 AS '日期',
+	SUM(x.销售额) AS '销售额',
+	SUM(x.订单数) AS '订单数',
+	SUM(x.新增会员) AS '新增会员',
+	SUM(x.美豆使用数) AS '美豆使用数'
+FROM chain
+LEFT JOIN
+(
+	(
+		SELECT
+			chain_orders.chain_id,
+			DATE_FORMAT(chain_orders.create_time, '%Y-%m-%d') AS '日期',
+			SUM(chain_orders.orders_amount + chain_orders.points_money_amount) AS '销售额',
+			COUNT(DISTINCT chain_orders.orders_id) AS '订单数',
+			0 AS '新增会员',
+			SUM(chain_orders.points_money_amount) AS '美豆使用数'
+		FROM chain_orders
+		WHERE chain_orders.orders_state = 40
+		GROUP BY chain_orders.chain_id, DATE_FORMAT(chain_orders.create_time, '%Y-%m-%d')
+	)
+	UNION ALL
+	(
+		SELECT
+			chain_member.chain_id,
+			DATE_FORMAT(chain_member.add_time, '%Y-%m-%d') AS '日期',
+			0 AS '销售额',
+			0 AS '订单数',
+			COUNT(DISTINCT chain_member.member_id) AS '新增会员',
+			0 AS '美豆使用数'
+		FROM chain_member
+		GROUP BY chain_member.chain_id, DATE_FORMAT(chain_member.add_time, '%Y-%m-%d')
+	)
+) AS x
+ON x.chain_id = chain.chain_id
+WHERE TRUE
+        -- 	AND chain.chain_name LIKE '%一树%'
+        <if test="日期 != null and 日期 != ''">
+            AND (x.日期 = #{日期})
+        </if>
+        <if test="门店名称 != null and 门店名称 != ''">
+            AND chain.chain_name LIKE CONCAT('%',#{门店名称},'%')
+        </if>
+        <!--<if >-->
+        <!--AND (x.日期 = '2020-07-27')-->
+        <!--</if>-->
+GROUP BY x.chain_id, x.日期
+ORDER BY x.chain_id, x.日期 DESC
+</select>
+
+
 	<select id="data6" parameterType="java.util.Map"  resultType="java.util.LinkedHashMap">
 SELECT * FROM
 (
