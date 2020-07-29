@@ -80,7 +80,7 @@ FROM
 	LEFT JOIN store ON store.store_id = chain.store_id
 	LEFT JOIN member ON member.member_id = chain_orders.member_id
 	WHERE 1=1
-	<if test="订单类型 != null and 订单类型 != '' and 订单类型 != 0">
+	<if test="订单类型 != null and 订单类型 != ''">
 	AND chain_orders.orders_type = #{订单类型}
 	</if>
 	<if test="订单状态 !=null and 订单状态 != ''">
@@ -175,6 +175,70 @@ ORDER BY ${sort} ${order}
 </if>
 	</select>
 	<select id="data2"  resultType="java.util.LinkedHashMap">
+SELECT
+store.store_id AS '店铺编号',
+store.store_name AS '店铺名称',
+store.class_name AS '店铺类型',
+store.seller_name AS '商家用户名',
+store.store_zy AS '主营行业',
+store.store_create_time AS '开店时间',
+store.store_end_time AS '过期时间',
+CASE store.state
+	WHEN 0 THEN '开启'
+	WHEN 1 THEN '关闭'
+END AS '店铺状态',
+level_marketing_distribution_store_site.store_sign_discount AS '分销比例',
+CONCAT(store.bill_cycle,
+	CASE store.bill_cycle_type
+		WHEN 1 THEN '月'
+		WHEN 2 THEN '天'
+	END
+) AS '结算周期'
+FROM store
+LEFT JOIN level_marketing_distribution_store_site ON level_marketing_distribution_store_site.store_id = store.store_id
+WHERE 1=1
+<if test="店铺编号 != null and 店铺编号 != ''">
+AND store.store_id = #{店铺编号}
+</if>
+<if test="店铺名称 != null and 店铺名称 != ''">
+AND store.store_name LIKE CONCAT('%', #{店铺名称}, '%')
+</if>
+<if test="店铺类型 != null and 店铺类型 != ''">
+AND store.class_name LIKE CONCAT('%', #{店铺类型}, '%')
+</if>
+<if test="商家用户名 != null and 商家用户名 != ''">
+AND store.seller_name LIKE CONCAT('%',  #{商家用户名}, '%')
+</if>
+<if test="主营行业 != null and 主营行业 != ''">
+AND store.store_zy LIKE CONCAT('%', #{主营行业}, '%')
+</if>
+<if test="开店时间_start != null and 开店时间_start != ''">
+AND store.store_create_time &gt;= #{开店时间_start}
+</if>
+<if test="开店时间_end != null and 开店时间_end != ''">
+AND store.store_create_time &lt;= #{开店时间_end}
+</if>
+<if test="过期时间_start != null and 过期时间_start != ''">
+AND store.store_end_time &gt;= #{过期时间_start}
+</if>
+<if test="过期时间_end != null and 过期时间_end != ''">
+AND store.store_end_time &lt;= #{过期时间_end}
+</if>
+<if test="店铺状态 != null and 店铺状态 != ''">
+AND store.state = #{店铺状态}
+</if>
+<if test="分销比例 != null and 分销比例 != ''">
+AND level_marketing_distribution_store_site.store_sign_discount = #{分销比例}
+</if>
+<if test="结算周期_num != null and 结算周期_num != ''">
+AND store.bill_cycle = #{结算周期_num}
+</if>
+<if test="结算周期_unit != null and 结算周期_unit != '' and 结算周期_unit != 0">
+AND store.bill_cycle_type = #{结算周期_unit}
+</if>
+<if test="sort != null and sort != '' and order != null and order != ''">
+ORDER BY ${sort} ${order}
+</if>
 	</select>
 	<select id="data3"  resultType="java.util.LinkedHashMap">
 	</select>

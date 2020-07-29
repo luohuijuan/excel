@@ -9,7 +9,7 @@
 	<form id="form" action="/export/data1" method="post">
 		<div style="display: none;"><input name="target" value="单个门店线上订单数据"></div>
 		<div>
-			<div><input name="订单类型" class="easyui-combobox" style="width: 80%;" type="text" data-options="label:'订单类型', editable:false, textField:'text', valueField:'value', data:[{text:'全部',value:0},{text:'O2O线上',value:100},{text:'B2C',value:999}]"></div>
+			<div><input name="订单类型" class="easyui-combobox" style="width: 80%;" type="text" data-options="label:'订单类型', editable:false, textField:'text', valueField:'value', data:[{text:'全部',value:''},{text:'O2O线上',value:100},{text:'B2C',value:999}], value:''"></div>
 			<div><input name="订单状态" class="easyui-combobox" style="width: 80%;" type="text" data-options="label:'订单状态', editable:false, textField:'text', valueField:'value', data:[{text:'订单被取消',value:0},{text:'生成新订单',value:10},{text:'已支付',value:30},{text:'订单完成',value:40},{text:'已接单',value:50},{text:'已呼叫配送',value:60},{text:'待收货',value:70},{text:'待评价',value:80}], value:40"></div>
 			<div><input name="订单编号" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'订单编号', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
 			<div><input name="商品名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'商品名称', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>

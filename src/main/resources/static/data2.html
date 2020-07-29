@@ -5,17 +5,44 @@
 	<title>店铺门店信息资料数据</title>
 </head>
 <body>
-<table class="easyui-datagrid" title="店铺门店信息资料数据" data-options="fit:true, fitColumns:true, singleSelect:true, url:'chain', method:'get', pagination:true, pageSize:20">
+<div id="toolbar" class="x-toolbar">
+	<form id="form" action="/export/data2" method="post">
+		<div style="display: none;"><input name="target" value="单个门店线上订单数据"></div>
+		<div>
+			<div><input name="店铺编号" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'店铺编号', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="店铺名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'店铺名称', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="店铺类型" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'店铺类型', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="店铺状态" class="easyui-combobox" style="width: 80%;" type="text" data-options="label:'店铺状态', editable:false, textField:'text', valueField:'value', data:[{text:'全部',value:''},{text:'开启',value:0},{text:'关闭',value:1}], value:''"></div>
+			<div><input name="商家用户名" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'商家用户名', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="主营行业" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'主营行业', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="开店时间_start" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'开店起始', editable:false, icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).datetimebox('clear');}}]"></div>
+			<div><input name="开店时间_end" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'开店截至', editable:false, icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).datetimebox('clear');}}]"></div>
+			<div><input name="过期时间_start" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'过期起始', editable:false, icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).datetimebox('clear');}}]"></div>
+			<div><input name="过期时间_end" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'过期截至', editable:false, icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).datetimebox('clear');}}]"></div>
+			<div><input name="分销比例" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'分销比例', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><label class="textbox-label" style="">结算周期</label><input name="结算周期_num" class="easyui-numberbox" style="width: 30%;" type="text" data-options="icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"><input name="结算周期_unit" class="easyui-combobox" style="width: 30%;" type="text" data-options="editable:false, textField:'text', valueField:'value', data:[{text:'全部',value:0},{text:'月',value:1},{text:'天',value:2}], value:0"></div>
+		</div>
+	</form>
+	<div>
+		<a href="#" onclick="$('#datagrid').datagrid({pageNumber:1, queryParams:serializeForm()});" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索查询</a>
+		<a href="#" onclick="$('#form').submit();" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
+	</div>
+</div>
+<table id="datagrid" class="easyui-datagrid" title="店铺门店信息资料数据" data-options="toolbar:'#toolbar', fit:true, fitColumns:true, singleSelect:true, url:'data2', method:'post', pagination:true, pageSize:20,
+onBeforeLoad:function(param){param = Object.assign(param, serializeForm());},
+loadFilter:function(data){return {total:data.total, rows:data.list}}">
 	<thead>
 		<tr>
-			<th data-options="field:'门店编号',width:100">门店编号</th>
-			<th data-options="field:'门店名称',width:100">门店名称</th>
-			<th data-options="field:'店主名称',width:100">店主名称</th>
-			<th data-options="field:'门店类型',width:100">门店类型</th>
-			<th data-options="field:'门店地址',width:100">门店地址</th>
-			<th data-options="field:'联系电话',width:100">联系电话</th>
-			<th data-options="field:'线上分销',width:100">线上分销</th>
-			<th data-options="field:'线下分销',width:100">线下分销</th>
+			<th data-options="field:'店铺编号',width:100, align:'center', sortable:true">店铺编号</th>
+			<th data-options="field:'店铺名称',width:200, align:'center', sortable:true">店铺名称</th>
+			<th data-options="field:'店铺类型',width:100, align:'center', sortable:true">店铺类型</th>
+			<th data-options="field:'商家用户名',width:200, align:'center', sortable:true">商家用户名</th>
+			<th data-options="field:'主营行业',width:100, align:'center', sortable:true">主营行业</th>
+			<th data-options="field:'开店时间',width:200, align:'center', sortable:true">开店时间</th>
+			<th data-options="field:'过期时间',width:200, align:'center', sortable:true">过期时间</th>
+			<th data-options="field:'店铺状态',width:100, align:'center', sortable:true">店铺状态</th>
+			<th data-options="field:'分销比例',width:100, align:'center', sortable:true">分销比例</th>
+			<th data-options="field:'结算周期',width:100, align:'center', sortable:true">结算周期</th>
 		</tr>
 	</thead>
 </table>
