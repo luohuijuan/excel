@@ -31,7 +31,7 @@ public class LoginController {
     public String lanLogin(@RequestParam("UserName")  String username, @RequestParam("Password") String password){
         boolean boo=base.springUtil(username,password);
         if(boo){
-            return "redirect:1111.html";
+            return "redirect:index.html";
         }else {
             return "redirect:error.html";
         }

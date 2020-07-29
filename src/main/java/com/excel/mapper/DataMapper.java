@@ -24,6 +24,11 @@ public interface DataMapper {
     public List<Map<String, Object>> data6(Map<String, String> map);
     public List<Map<String, Object>> data7(Map<String, String> map);
     public List<Map<String, Object>> data8(Map<String, String> map);
+
+    /**
+     * 0-线下扫码多个店铺、门店订单数据
+     * @return
+     */
     public List<Map<String, Object>> data9(Map<String, String> map);
 
 }
