@@ -397,8 +397,11 @@ AND x.订单金额 = #{订单金额}
 ORDER BY ${sort} ${order}
 </if>
 	</select>
+
 	<select id="data4"  resultType="java.util.LinkedHashMap">
 	</select>
+
+
 	<select id="data5"  resultType="java.util.LinkedHashMap">
     SELECT
 	chain.chain_name AS '门店名称',
@@ -748,4 +751,62 @@ WHERE 1=1
 		</if>
 ORDER BY t.chain_id DESC
 </select>
+
+
+	<select id="data10"  resultType="java.util.LinkedHashMap">
+			SELECT
+		s.seller_name AS 商家用户名,
+		s.store_name AS 店铺名称,
+		s.joinin_submit_time AS 申请时间,
+		s.joinin_year AS 申请年限,
+		s.apply_status_msg AS 签约状态,
+		s.joinin_message AS 签约意见,
+		(
+			CASE s.state
+			WHEN 10 THEN
+				'入驻新申请'
+			WHEN 15 THEN
+				'初审失败'
+			WHEN 16 THEN
+				'待上传银联签约资料'
+			WHEN 20 THEN
+				'初审成功'
+			WHEN 30 THEN
+				'缴费完成'
+			WHEN 35 THEN
+				'缴费审核失败'
+			WHEN 40 THEN
+				'入驻信息更新申请'
+			WHEN 45 THEN
+				'入驻信息更新申请失败'
+			WHEN 50 THEN
+				'缴费审核成功'
+			WHEN 90 THEN
+				'审核成功'
+			ELSE
+				NULL
+			END
+		) AS 申请状态,
+		s.offline_discount AS 线上比例,
+		s.online_discount AS 线下比例,
+		i.iron_name AS 维护人铁军,
+		CONCAT_WS(",",c.company_address,c.company_address_detail) as 商家详细地址
+	FROM
+		store_joinin s
+	LEFT JOIN store_certificate c ON s.seller_id = c.seller_id
+	LEFT JOIN seller l ON s.seller_id = l.seller_id
+	LEFT JOIN iron_army i ON l.iron_id = i.iron_id
+	WHERE
+		1=1
+		<if test="申请时间_start != null and 申请时间_start != '' and 申请时间_end !=null and 申请时间_end !=''">
+		and s.joinin_submit_time BETWEEN #{申请时间_start} AND #{申请时间_end}
+		</if>
+		<if test="商家用户名 != null and 商家用户名 != ''">
+			and s.seller_name=#{商家用户名}
+		</if>
+		<if test="店铺名称 != null and 店铺名称 != ''">
+			and s.store_name=#{店铺名称}
+		</if>
+		ORDER BY s.joinin_submit_time
+	</select>
 </mapper>

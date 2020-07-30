@@ -98,7 +98,15 @@ public class DataController {
         PageInfo pageInfo=new PageInfo(list);
         return pageInfo;
     }
-    
+
+    @RequestMapping("/data10")
+    @ResponseBody
+    public Object data10(@RequestParam  Map<String, String> map){
+        PageHelper.startPage(Integer.valueOf(map.get("page")), Integer.valueOf(map.get("rows")));
+        List<Map<String, Object>> list= dataMapper.data10(map);
+        PageInfo pageInfo=new PageInfo(list);
+        return pageInfo;
+    }
 
     @RequestMapping("/chain")
     @ResponseBody

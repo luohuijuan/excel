@@ -48,5 +48,10 @@ public interface DataMapper {
      * @return
      */
     public List<Map<String, Object>> data9(Map<String, String> map);
+    /**
+     * 0-商家入驻申请数据
+     * @return
+     */
+    public List<Map<String, Object>> data10(Map<String, String> map);
 
 }

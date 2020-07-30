@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>商家入驻申请</title>
+</head>
+<body>
+<div id="toolbar" class="x-toolbar">
+	<form id="form" action="/export/data10" method="post">
+		<div style="display: none;"><input name="target" value="门店信息数据表"></div>
+		<div>
+			<div><input name="商家用户名" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'商家用户名', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="店铺名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'店铺名称', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="申请时间_start" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'起始时间', editable:false"></div>
+			<div><input name="申请时间_end" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'截至时间', editable:false"></div>
+		</div>
+	</form>
+	<div>
+		<a href="#" onclick="$('#datagrid').datagrid({pageNumber:1, queryParams:serializeForm()});" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索查询</a>
+		<a href="#" onclick="$('#form').submit()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
+	</div>
+</div>
+<table id="datagrid" class="easyui-datagrid" title="商家入驻申请" data-options="toolbar:'#toolbar',fit:true, fitColumns:true, singleSelect:true, url:'data10',
+ method:'get', pagination:true, pageSize:20,
+onBeforeLoad:function(param){param = Object.assign(param, serializeForm());},
+loadFilter:function(data){return {total:data.total, rows:data.list}}">
+	<thead>
+	<tr>
+		<th data-options="field:'商家用户名',width:100">商家用户名</th>
+		<th data-options="field:'店铺名称',width:100">店铺名称</th>
+		<th data-options="field:'申请时间',width:100">申请时间</th>
+		<th data-options="field:'申请年限',width:100">申请年限</th>
+		<th data-options="field:'签约状态',width:100">签约状态</th>
+		<th data-options="field:'签约意见',width:100">签约意见</th>
+		<th data-options="field:'申请状态',width:100">申请状态</th>
+		<th data-options="field:'线上比例',width:100">线上比例</th>
+		<th data-options="field:'线下比例',width:100">线下比例</th>
+		<th data-options="field:'维护人铁军',width:100">维护人铁军</th>
+		<th data-options="field:'商家详细地址',width:100">商家详细地址</th>
+	</tr>
+	</thead>
+</table>
+</body>
+</html>
