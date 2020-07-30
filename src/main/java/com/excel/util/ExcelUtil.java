@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ExcelUtil {
-	public static String downloadPath = ExcelUtil.class.getResource("/").getPath() + "static" + File.separator +"download";
+	public static String downloadPath;
 	private static ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
 	private static class DeleteFileRunnable implements Runnable {

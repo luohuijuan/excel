@@ -35,48 +35,53 @@ public class ExportController {
 
     @RequestMapping("/data1")
     public String data1(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap) throws IOException{
-        List<Map<String, Object>> list= dataMapper.data1(parameterMap);
+    	target = (target == null || (target = target.trim()).isEmpty()) ? "data1" : target;
+    	List<Map<String, Object>> list= dataMapper.data1(parameterMap);
     	Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
-    	String filename = ((target == null || (target = target.trim()).isEmpty()) ? "data1" : target) + System.currentTimeMillis();
-    	dataMap.put(filename, list);
+    	dataMap.put(target, list);
+    	String filename = target + "_" + System.currentTimeMillis();
 		ExcelUtil.writeExcel(dataMap, ExcelUtil.downloadPath + File.separator + filename + ".xlsx");
 		return "redirect:/download/" + URLEncoder.encode(filename, "UTF-8") + ".xlsx";
     }
     @RequestMapping("/data2")
     public String data2(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap) throws IOException{
-        List<Map<String, Object>> list= dataMapper.data1(parameterMap);
+    	target = (target == null || (target = target.trim()).isEmpty()) ? "data2" : target;
+    	List<Map<String, Object>> list= dataMapper.data2(parameterMap);
     	Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
-    	String filename = ((target == null || (target = target.trim()).isEmpty()) ? "data2" : target) + System.currentTimeMillis();
-    	dataMap.put(filename, list);
+    	dataMap.put(target, list);
+    	String filename = target + "_" + System.currentTimeMillis();
 		ExcelUtil.writeExcel(dataMap, ExcelUtil.downloadPath + File.separator + filename + ".xlsx");
 		return "redirect:/download/" + URLEncoder.encode(filename, "UTF-8") + ".xlsx";
     }
     @RequestMapping("/data3")
     public String data3(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap) throws IOException{
-        List<Map<String, Object>> list= dataMapper.data1(parameterMap);
+    	target = (target == null || (target = target.trim()).isEmpty()) ? "data3" : target;
+    	List<Map<String, Object>> list= dataMapper.data3(parameterMap);
     	Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
-    	String filename = ((target == null || (target = target.trim()).isEmpty()) ? "data3" : target) + System.currentTimeMillis();
-    	dataMap.put(filename, list);
+    	dataMap.put(target, list);
+    	String filename = target + "_" + System.currentTimeMillis();
 		ExcelUtil.writeExcel(dataMap, ExcelUtil.downloadPath + File.separator + filename + ".xlsx");
 		return "redirect:/download/" + URLEncoder.encode(filename, "UTF-8") + ".xlsx";
     }
     @RequestMapping("/data4")
     public String data4(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap) throws IOException{
-        List<Map<String, Object>> list= dataMapper.data1(parameterMap);
+    	target = (target == null || (target = target.trim()).isEmpty()) ? "data4" : target;
+    	List<Map<String, Object>> list= dataMapper.data4(parameterMap);
     	Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
-    	String filename = ((target == null || (target = target.trim()).isEmpty()) ? "data4" : target) + System.currentTimeMillis();
-    	dataMap.put(filename, list);
-    	ExcelUtil.writeExcel(dataMap, ExcelUtil.downloadPath + File.separator + filename + ".xlsx");
+    	dataMap.put(target, list);
+    	String filename = target + "_" + System.currentTimeMillis();
+		ExcelUtil.writeExcel(dataMap, ExcelUtil.downloadPath + File.separator + filename + ".xlsx");
 		return "redirect:/download/" + URLEncoder.encode(filename, "UTF-8") + ".xlsx";
     }
 
 
 	@RequestMapping("/data5")
 	public String data5(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap) throws IOException{
-		List<Map<String, Object>> list= dataMapper.data5(parameterMap);
-		Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
-		String filename = ((target == null || (target = target.trim()).isEmpty()) ? "data5" : target) + System.currentTimeMillis();
-		dataMap.put(filename, list);
+		target = (target == null || (target = target.trim()).isEmpty()) ? "data5" : target;
+    	List<Map<String, Object>> list= dataMapper.data5(parameterMap);
+    	Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
+    	dataMap.put(target, list);
+    	String filename = target + "_" + System.currentTimeMillis();
 		ExcelUtil.writeExcel(dataMap, ExcelUtil.downloadPath + File.separator + filename + ".xlsx");
 		return "redirect:/download/" + URLEncoder.encode(filename, "UTF-8") + ".xlsx";
 	}
@@ -84,40 +89,44 @@ public class ExportController {
 
     @RequestMapping("/data6")
     public String data6(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap, HttpServletResponse httpServletResponse) throws IOException{
-        List<Map<String, Object>> list= dataMapper.data6(parameterMap);
+    	target = (target == null || (target = target.trim()).isEmpty()) ? "data6" : target;
+    	List<Map<String, Object>> list= dataMapper.data6(parameterMap);
     	Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
-    	String filename = ((target == null || (target = target.trim()).isEmpty()) ? "data6" : target) + System.currentTimeMillis();
-    	dataMap.put(filename, list);
+    	dataMap.put(target, list);
+    	String filename = target + "_" + System.currentTimeMillis();
 		ExcelUtil.writeExcel(dataMap, ExcelUtil.downloadPath + File.separator + filename + ".xlsx");
 		return "redirect:/download/" + URLEncoder.encode(filename, "UTF-8") + ".xlsx";
     }
 
 	@RequestMapping("/data7")
 	public String data7(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap) throws IOException{
-		List<Map<String, Object>> list= dataMapper.data7(parameterMap);
-		Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
-		String filename = ((target == null || (target = target.trim()).isEmpty()) ? "data7" : target) + System.currentTimeMillis();
-		dataMap.put(filename, list);
+		target = (target == null || (target = target.trim()).isEmpty()) ? "data7" : target;
+    	List<Map<String, Object>> list= dataMapper.data7(parameterMap);
+    	Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
+    	dataMap.put(target, list);
+    	String filename = target + "_" + System.currentTimeMillis();
 		ExcelUtil.writeExcel(dataMap, ExcelUtil.downloadPath + File.separator + filename + ".xlsx");
 		return "redirect:/download/" + URLEncoder.encode(filename, "UTF-8") + ".xlsx";
 	}
 
 	@RequestMapping("/data8")
 	public  String data8(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap) throws IOException{
-		List<Map<String, Object>> list=dataMapper.data8(parameterMap);
-		Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
-		String filename = ((target == null || (target = target.trim()).isEmpty()) ? "data8" : target) + System.currentTimeMillis();
-		dataMap.put(filename, list);
+		target = (target == null || (target = target.trim()).isEmpty()) ? "data8" : target;
+    	List<Map<String, Object>> list= dataMapper.data8(parameterMap);
+    	Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
+    	dataMap.put(target, list);
+    	String filename = target + "_" + System.currentTimeMillis();
 		ExcelUtil.writeExcel(dataMap, ExcelUtil.downloadPath + File.separator + filename + ".xlsx");
 		return "redirect:/download/" + URLEncoder.encode(filename, "UTF-8") + ".xlsx";
 	};
 
 	@RequestMapping("/data9")
     public  String data9(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap) throws IOException{
-		List<Map<String, Object>> list=dataMapper.data9(parameterMap);
-		Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
-		String filename = ((target == null || (target = target.trim()).isEmpty()) ? "data9" : target) + System.currentTimeMillis();
-		dataMap.put(filename, list);
+		target = (target == null || (target = target.trim()).isEmpty()) ? "data9" : target;
+    	List<Map<String, Object>> list= dataMapper.data9(parameterMap);
+    	Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
+    	dataMap.put(target, list);
+    	String filename = target + "_" + System.currentTimeMillis();
 		ExcelUtil.writeExcel(dataMap, ExcelUtil.downloadPath + File.separator + filename + ".xlsx");
 		return "redirect:/download/" + URLEncoder.encode(filename, "UTF-8") + ".xlsx";
 	};
