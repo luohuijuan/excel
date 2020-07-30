@@ -5,17 +5,42 @@
 	<title>会员数据</title>
 </head>
 <body>
-<table class="easyui-datagrid" title="会员数据" data-options="fit:true, fitColumns:true, singleSelect:true, url:'chain', method:'get', pagination:true, pageSize:20">
+<div id="toolbar" class="x-toolbar">
+	<form id="form" action="/export/data4" method="post">
+		<div style="display: none;"><input name="target" value="会员数据"></div>
+		<div>
+			<div><input name="会员名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'会员名称', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="会员电话" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'会员电话', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="添加时间_start" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'时间起始', editable:false"></div>
+			<div><input name="添加时间_end" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'时间截至', editable:false"></div>
+			<div><input name="操作阶段" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'操作阶段', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="操作描述" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'操作描述', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="O2O订单号" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'O2O订单号', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="O2O操作门店" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'O2O门店名', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="B2C订单号" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'B2C订单号', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="B2C操作店铺" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'B2C店铺名', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+		</div>
+	</form>
+	<div>
+		<a href="#" onclick="$('#datagrid').datagrid({pageNumber:1, queryParams:serializeForm()});" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索查询</a>
+		<a href="#" onclick="$('#form').submit();" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
+	</div>
+</div>
+<table id="datagrid" class="easyui-datagrid" title="会员数据" data-options="toolbar:'#toolbar', fit:true, fitColumns:true, singleSelect:true, url:'data4', method:'get', pagination:true, pageSize:20,
+onBeforeLoad:function(param){param = Object.assign(param, serializeForm());},
+loadFilter:function(data){return {total:data.total, rows:data.list}}">
 	<thead>
 		<tr>
-			<th data-options="field:'门店编号',width:100">门店编号</th>
-			<th data-options="field:'门店名称',width:100">门店名称</th>
-			<th data-options="field:'店主名称',width:100">店主名称</th>
-			<th data-options="field:'门店类型',width:100">门店类型</th>
-			<th data-options="field:'门店地址',width:100">门店地址</th>
-			<th data-options="field:'联系电话',width:100">联系电话</th>
-			<th data-options="field:'线上分销',width:100">线上分销</th>
-			<th data-options="field:'线下分销',width:100">线下分销</th>
+			<th data-options="field:'会员名称',width:100, align:'center', sortable:true">会员名称</th>
+			<th data-options="field:'会员电话',width:100, align:'center', sortable:true">会员电话</th>
+			<th data-options="field:'美豆增减',width:80, align:'center', sortable:true">美豆增减</th>
+			<th data-options="field:'添加时间',width:150, align:'center', sortable:true">添加时间</th>
+			<th data-options="field:'操作阶段',width:100, align:'center', sortable:true">操作阶段</th>
+			<th data-options="field:'操作描述',width:200, align:'center', sortable:true">操作描述</th>
+			<th data-options="field:'O2O订单号',width:150, align:'center', sortable:true">O2O订单号</th>
+			<th data-options="field:'O2O操作门店',width:150, align:'center', sortable:true">O2O操作门店</th>
+			<th data-options="field:'B2C订单号',width:150, align:'center', sortable:true">B2C订单号</th>
+			<th data-options="field:'B2C操作店铺',width:150, align:'center', sortable:true">B2C操作店铺</th>
 		</tr>
 	</thead>
 </table>

@@ -399,6 +399,108 @@ ORDER BY ${sort} ${order}
 	</select>
 
 	<select id="data4"  resultType="java.util.LinkedHashMap">
+SELECT * FROM (
+	SELECT
+		member.member_name AS '会员名称',
+		member.mobile AS '会员电话',
+		points_log.points AS '美豆增减',
+		points_log.add_time AS '添加时间',
+		points_log.operation_stage AS '操作阶段',
+		points_log.description AS '操作描述',
+		-- '' AS '操作门店名称',
+		chain_orders.orders_sn AS 'O2O订单号',
+		chain.chain_name AS 'O2O操作门店',
+		'' AS 'B2C订单号',
+		'' AS 'B2C操作店铺'
+	FROM points_log
+	LEFT JOIN member ON member.member_id = points_log.member_id
+	LEFT JOIN chain_orders ON TRUE
+	LEFT JOIN chain ON chain.chain_id = chain_orders.chain_id
+	WHERE POSITION(chain_orders.orders_sn IN points_log.description) > 0
+	<if test="会员名称 != null and 会员名称 != ''">
+	AND member.member_name LIKE CONCAT('%', #{会员名称}, '%')
+	</if>
+	<if test="会员电话 != null and 会员电话 != ''">
+	AND member.mobile LIKE CONCAT('%', #{会员电话}, '%')
+	</if>
+	<if test="添加时间_start != null and 添加时间_start != ''">
+	AND points_log.add_time &gt;= #{添加时间_start}
+	</if>
+	<if test="添加时间_end != null and 添加时间_end != ''">
+	AND points_log.add_time &lt;= #{添加时间_end}
+	</if>
+	<if test="操作阶段 != null and 操作阶段 != ''">
+	AND points_log.operation_stage LIKE CONCAT('%', #{操作阶段}, '%')
+	</if>
+	<if test="操作描述 != null and 操作描述 != ''">
+	AND points_log.description LIKE CONCAT('%', #{操作描述}, '%')
+	</if>
+	<if test="O2O订单号 != null and O2O订单号 != ''">
+	AND chain_orders.orders_sn LIKE CONCAT('%', #{O2O订单号}, '%')
+	</if>
+	<if test="O2O操作门店 != null and O2O操作门店 != ''">
+	AND chain.chain_name LIKE CONCAT('%', #{O2O操作门店}, '%')
+	</if>
+	<if test="B2C订单号 != null and B2C订单号 != ''">
+	AND '' = #{B2C订单号}
+	</if>
+	<if test="B2C操作店铺 != null and B2C操作店铺 != ''">
+	AND '' = #{B2C操作店铺}
+	</if>
+	
+	UNION ALL
+
+	SELECT
+		member.member_name AS '会员名称',
+		member.mobile AS '会员电话',
+		points_log.points AS '美豆增减',
+		points_log.add_time AS '添加时间',
+		points_log.operation_stage AS '操作阶段',
+		points_log.description AS '操作描述',
+		-- '' AS '操作门店名称',
+		'' AS 'O2O订单号',
+		'' AS 'O2O操作门店',
+		orders.orders_sn AS 'B2C订单号',
+		store.store_name AS 'B2C操作店铺'
+	FROM points_log
+	LEFT JOIN member ON member.member_id = points_log.member_id
+	LEFT JOIN orders ON TRUE
+	LEFT JOIN store ON store.store_id = orders.store_id
+	WHERE POSITION(orders.orders_sn IN points_log.description) > 0
+	<if test="会员名称 != null and 会员名称 != ''">
+	AND member.member_name LIKE CONCAT('%', #{会员名称}, '%')
+	</if>
+	<if test="会员电话 != null and 会员电话 != ''">
+	AND member.mobile LIKE CONCAT('%', #{会员电话}, '%')
+	</if>
+	<if test="添加时间_start != null and 添加时间_start != ''">
+	AND points_log.add_time &gt;= #{添加时间_start}
+	</if>
+	<if test="添加时间_end != null and 添加时间_end != ''">
+	AND points_log.add_time &lt;= #{添加时间_end}
+	</if>
+	<if test="操作阶段 != null and 操作阶段 != ''">
+	AND points_log.operation_stage LIKE CONCAT('%', #{操作阶段}, '%')
+	</if>
+	<if test="操作描述 != null and 操作描述 != ''">
+	AND points_log.description LIKE CONCAT('%', #{操作描述}, '%')
+	</if>
+	<if test="O2O订单号 != null and O2O订单号 != ''">
+	AND '' = #{O2O订单号}
+	</if>
+	<if test="O2O操作门店 != null and O2O操作门店 != ''">
+	AND '' = #{O2O操作门店}
+	</if>
+	<if test="B2C订单号 != null and B2C订单号 != ''">
+	AND orders.orders_sn LIKE CONCAT('%', #{B2C订单号}, '%')
+	</if>
+	<if test="B2C操作店铺 != null and B2C操作店铺 != ''">
+	AND store.store_name LIKE CONCAT('%', #{B2C操作店铺}, '%')
+	</if>
+) AS x
+<if test="sort != null and sort != '' and order != null and order != ''">
+ORDER BY ${sort} ${order}
+</if>
 	</select>
 
 
