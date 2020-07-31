@@ -97,7 +97,7 @@ public class ExcelUtil {
 						Set<Entry<String, Object>> entrySet = map.entrySet();
 						for (Entry<String, Object> entry : entrySet) {
 							Cell cell = row.createCell(cellIndex++);
-							cell.setCellValue(String.valueOf(entry.getValue()));
+							cell.setCellValue(entry.getValue() == null ? "" : String.valueOf(entry.getValue()));
 						}
 					}
 				}
