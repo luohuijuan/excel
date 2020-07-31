@@ -5,11 +5,12 @@
 	<title>平台日数据表</title>
 </head>
 <body>
+
 <div id="toolbar" class="x-toolbar">
 	<form id="form" action="/export/data7" method="post">
 		<div style="display: none;"><input name="target" value="平台日数据表"></div>
 		<div>
-			<input name="时间" type="text" class="easyui-datebox"  style="width: 80%;" type="text" data-options="label:'时间/每天', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]">
+			<div><input name="时间" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'时间', editable:false"></div>
 		</div>
 	</form>
 	<div>
@@ -17,19 +18,41 @@
 		<a href="#" onclick="$('#form').submit()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
 	</div>
 </div>
-<table id="datagrid" class="easyui-datagrid" title="平台日数据表" data-options="toolbar:'#toolbar',fit:true, fitColumns:true, singleSelect:true, url:'data7', method:'get',
-pagination:true, pageSize:20,onBeforeLoad:function(param){param = Object.assign(param, serializeForm());},loadFilter:function(data){return {total:data.total, rows:data.list}}">
+
+<!--<table id="datagrid" class="easyui-datagrid" title="门店信息数据表" data-options="toolbar:'#toolbar', fit:true, fitColumns:true, singleSelect:true, url:'data6', method:'post', pagination:true, pageSize:20, remoteSort:true, sortName:'门店编号',  sortOrder:'asc',-->
+<!--onBeforeLoad:function(param){param = Object.assign(param, serializeForm());},-->
+<!--loadFilter:function(data){return {total:data.total, rows:data.list}}">-->
+	<!--<thead>-->
+	<!--<tr>-->
+		<!--<th data-options="field:'门店编号',width:10">门店编号</th>-->
+		<!--<th data-options="field:'门店名称',width:20">门店名称</th>-->
+		<!--<th data-options="field:'店主名称',width:20">店主名称</th>-->
+		<!--<th data-options="field:'门店类型',width:10">门店类型</th>-->
+		<!--<th data-options="field:'门店地址',width:20">门店地址</th>-->
+		<!--<th data-options="field:'联系电话',width:10">联系电话</th>-->
+		<!--<th data-options="field:'线上分销',width:6">线上分销</th>-->
+		<!--<th data-options="field:'线下分销',width:6">线下分销</th>-->
+	<!--</tr>-->
+	<!--</thead>-->
+<!--</table>-->
+
+<table id="datagrid" class="easyui-datagrid" title="平台日数据表" data-options="fit:true, toolbar:'#toolbar',fitColumns:true, singleSelect:true, url:'data7', method:'get',
+	pagination:true, pageSize:20,remoteSort:true,
+	onBeforeLoad:function(param){param = Object.assign(param, serializeForm());},
+	loadFilter:function(data){return {total:data.total, rows:data.list}}">
 	<thead>
 		<tr>
-			<th data-options="field:'时间/每天',width:120">时间/每天</th>
-			<th data-options="field:'销售额',width:100">销售额</th>
-			<th data-options="field:'订单数',width:100">订单数</th>
-			<th data-options="field:'新增会员',width:100">新增会员</th>
-			<th data-options="field:'美豆使用数',width:100">美豆使用数</th>
-			<th data-options="field:'美豆使用人数',width:100">美豆使用人数</th>
-			<th data-options="field:'赠送美豆人数',width:100">赠送美豆人数</th>
+			<th data-options="field:'时间/每天',width:20">时间/每天</th>
+			<th data-options="field:'销售额',width:20">销售额</th>
+			<th data-options="field:'订单数',width:20">订单数</th>
+			<th data-options="field:'新增会员',width:20">新增会员</th>
+			<th data-options="field:'美豆使用数',width:20">美豆使用数</th>
+			<th data-options="field:'美豆使用人数',width:10">美豆使用人数</th>
+			<th data-options="field:'赠送美豆人数',width:10">赠送美豆人数</th>
 		</tr>
 	</thead>
 </table>
 </body>
 </html>
+
+
