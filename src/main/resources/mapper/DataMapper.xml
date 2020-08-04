@@ -911,4 +911,144 @@ ORDER BY t.chain_id DESC
 		</if>
 		ORDER BY s.joinin_submit_time
 	</select>
+	<select id="data11"  resultType="java.util.LinkedHashMap">
+SELECT x.* FROM (
+
+SELECT
+	member.member_id AS '会员编号',
+	member.member_name AS '会员名称',
+	member.mobile AS '会员电话',
+	chain_member.chain_id AS '会员归属门店编号',
+	chain_member.chain_name AS '会员归属门店名称',
+	points_log.add_time AS '时间',
+	CASE points_log.operation_stage
+		WHEN 'login' THEN '会员登录'
+		WHEN 'comments' THEN '商品评论'
+		WHEN 'orders' THEN '订单消费'
+		WHEN 'register' THEN '会员注册'
+		WHEN 'admin' THEN '管理员增减'
+		WHEN 'coupon' THEN '领取平台券'
+		WHEN 'membersignin' THEN '会员签到'
+		WHEN 'pointsorders' THEN '兑换商品'
+		WHEN 'activity' THEN '参加活动'
+		WHEN 'pointsmoney' THEN '美豆抵现'
+	END AS '操作阶段',
+	points_log.points AS '美豆变更数额',
+	points_log.description AS '描述',
+	'' AS '订单号',
+	'' AS '订单类型',
+	'' AS '订单关联门店编号',
+	'' AS '订单关联门店名称',
+	'' AS '订单关联店铺编号',
+	'' AS '订单关联店铺名称'
+FROM points_log
+LEFT JOIN member ON member.member_id = points_log.member_id
+LEFT JOIN chain_member ON chain_member.member_id = member.member_id
+WHERE points_log.points != 0
+	AND member.member_name IS NOT NULL
+<if test="会员编号 != null and 会员编号 != ''">
+AND member.member_id = #{会员编号}
+</if>
+<if test="会员名称 != null and 会员名称 != ''">
+AND member.member_name LIKE CONCAT('%', #{会员名称}, '%')
+</if>
+<if test="会员电话 != null and 会员电话 != ''">
+AND member.member_name LIKE CONCAT('%', #{会员电话}, '%')
+</if>
+<if test="时间_start != null and 时间_start != ''">
+AND points_log.add_time &gt;= #{时间_start}
+</if>
+<if test="时间_end != null and 时间_end != ''">
+AND points_log.add_time &lt;= #{时间_end}
+</if>
+
+UNION ALL
+
+SELECT
+	member.member_id AS '会员编号',
+	member.member_name AS '会员名称',
+	member.mobile AS '会员电话',
+	chain_member.chain_id AS '会员归属门店编号',
+	chain_member.chain_name AS '会员归属门店名称',
+	chain_orders.finish_time AS '时间',
+	'美豆抵现' AS '操作阶段',
+	chain_orders.points_money_amount * -1 AS '美豆变更数额',
+	'' AS '描述',
+	chain_orders.orders_sn AS '订单号',
+	CASE chain_orders.orders_type
+	WHEN 100 THEN 'O2O线上'
+	WHEN 101 THEN 'O2O线下'
+	WHEN 102 THEN 'O2O线下扫码'
+	END AS '订单类型',
+	chain_orders.chain_id AS '订单关联门店编号',
+	chain_orders.chain_name AS '订单关联门店名称',
+	'' AS '订单关联店铺编号',
+	'' AS '订单关联店铺名称'
+FROM chain_orders
+LEFT JOIN member ON member.member_id = chain_orders.member_id
+LEFT JOIN chain_member ON chain_member.member_id = member.member_id
+WHERE chain_orders.orders_state = 40
+	AND chain_orders.orders_amount > 0
+	AND chain_orders.points_money_amount > 0
+<if test="会员编号 != null and 会员编号 != ''">
+AND member.member_id = #{会员编号}
+</if>
+<if test="会员名称 != null and 会员名称 != ''">
+AND member.member_name LIKE CONCAT('%', #{会员名称}, '%')
+</if>
+<if test="会员电话 != null and 会员电话 != ''">
+AND member.member_name LIKE CONCAT('%', #{会员电话}, '%')
+</if>
+<if test="时间_start != null and 时间_start != ''">
+AND chain_orders.finish_time &gt;= #{时间_start}
+</if>
+<if test="时间_end != null and 时间_end != ''">
+AND chain_orders.finish_time &lt;= #{时间_end}
+</if>
+
+UNION ALL
+
+SELECT
+	member.member_id AS '会员编号',
+	member.member_name AS '会员名称',
+	member.mobile AS '会员电话',
+	chain_member.chain_id AS '会员归属门店编号',
+	chain_member.chain_name AS '会员归属门店名称',
+	orders.finish_time AS '时间',
+	'美豆抵现' AS '操作阶段',
+	orders.points_money_amount * -1 AS '美豆变更数额',
+	'' AS '描述',
+	orders.orders_sn AS '订单号',
+	'B2C' AS '订单类型',
+	'' AS '订单关联门店编号',
+	'' AS '订单关联门店名称',
+	orders.store_id AS '订单关联店铺编号',
+	orders.store_name AS '订单关联店铺名称'
+FROM orders
+LEFT JOIN member ON member.member_id = orders.member_id
+LEFT JOIN chain_member ON chain_member.member_id = member.member_id
+WHERE orders.orders_state = 40
+	AND orders.orders_amount > 0
+	AND orders.points_money_amount > 0
+<if test="会员编号 != null and 会员编号 != ''">
+AND member.member_id = #{会员编号}
+</if>
+<if test="会员名称 != null and 会员名称 != ''">
+AND member.member_name LIKE CONCAT('%', #{会员名称}, '%')
+</if>
+<if test="会员电话 != null and 会员电话 != ''">
+AND member.member_name LIKE CONCAT('%', #{会员电话}, '%')
+</if>
+<if test="时间_start != null and 时间_start != ''">
+AND orders.finish_time &gt;= #{时间_start}
+</if>
+<if test="时间_end != null and 时间_end != ''">
+AND orders.finish_time &lt;= #{时间_end}
+</if>
+
+) AS x
+<if test="sort != null and sort != '' and order != null and order != ''">
+ORDER BY ${sort} ${order}
+</if>
+	</select>
 </mapper>
