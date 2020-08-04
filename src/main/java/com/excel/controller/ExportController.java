@@ -143,4 +143,15 @@ public class ExportController {
 		return "redirect:/download/" + URLEncoder.encode(filename, "UTF-8") + ".xlsx";
 	};
 
+	@RequestMapping("/data12")
+	public  String data12(@RequestParam("target") String target, @RequestParam  Map<String, String> parameterMap) throws IOException{
+		target = (target == null || (target = target.trim()).isEmpty()) ? "data12" : target;
+		List<Map<String, Object>> list= dataMapper.data12(parameterMap);
+		Map<String, List<Map<String, Object>>> dataMap = new LinkedHashMap<String, List<Map<String,Object>>>();
+		dataMap.put(target, list);
+		String filename = target + "_" + System.currentTimeMillis();
+		ExcelUtil.writeExcel(dataMap, ExcelUtil.downloadPath + File.separator + filename + ".xlsx");
+		return "redirect:/download/" + URLEncoder.encode(filename, "UTF-8") + ".xlsx";
+	};
+
 }

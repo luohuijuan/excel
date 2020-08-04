@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>会员美豆流水</title>
+</head>
+<body>
+<div id="toolbar" class="x-toolbar">
+	<form id="form" action="/export/data11" method="post">
+		<div style="display: none;"><input name="target" value="会员美豆流水"></div>
+		<div>
+			<div><input name="会员编号" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'会员编号', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="会员名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'会员名称', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="会员电话" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'会员电话', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="操作阶段" class="easyui-combobox" style="width: 80%;" type="text" data-options="label:'操作阶段', editable:false, textField:'text', valueField:'value', data:[
+			{text:'全部',value:''},
+			{text:'会员登录',value:'login'},
+			{text:'商品评论',value:'comments'},
+			{text:'订单消费',value:'orders'},
+			{text:'会员注册',value:'register'},
+			{text:'管理员增减',value:'admin'},
+			{text:'领取平台券',value:'coupon'},
+			{text:'会员签到',value:'membersignin'},
+			{text:'兑换商品',value:'pointsorders'},
+			{text:'参加活动',value:'activity'},
+			{text:'美豆抵现',value:'pointsmoney'}
+			], value:''"></div>
+			<div><input name="时间_start" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'时间起始', editable:false"></div>
+			<div><input name="时间_end" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'时间截至', editable:false"></div>
+		</div>
+	</form>
+	<div>
+		<a href="#" onclick="$('#datagrid').datagrid({pageNumber:1, queryParams:serializeForm()});" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索查询</a>
+		<a href="#" onclick="$('#form').submit();" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
+	</div>
+</div>
+<table id="datagrid" class="easyui-datagrid" title="会员数据" data-options="toolbar:'#toolbar', fit:true, singleSelect:true, url:'data11', method:'get', pagination:true, pageSize:20,
+onBeforeLoad:function(param){param = Object.assign(param, serializeForm());},
+loadFilter:function(data){return {total:data.total, rows:data.list}}">
+	<thead data-options="frozen:true">
+		<tr>
+			<th data-options="field:'会员编号', width:80, align:'center', sortable:true">会员编号</th>
+			<th data-options="field:'会员名称', width:130, align:'center', sortable:true">会员名称</th>
+			<th data-options="field:'会员电话', width:110, align:'center', sortable:true">会员电话</th>
+			<th data-options="field:'会员归属门店编号', width:140, align:'center', sortable:true">会员归属门店编号</th>
+			<th data-options="field:'会员归属门店名称', width:200, align:'center', sortable:true">会员归属门店名称</th>
+			<th data-options="field:'时间', width:160, align:'center', sortable:true">时间</th>
+			<th data-options="field:'操作阶段', width:100, align:'center', sortable:true">操作阶段</th>
+			<th data-options="field:'美豆变更数额', width:110, align:'center', sortable:true">美豆变更数额</th>
+		</tr>
+	</thead>
+	<thead>
+		<tr>
+			<th data-options="field:'描述', width:300, align:'center', sortable:true">描述</th>
+			<th data-options="field:'订单号', width:200, align:'center', sortable:true">订单号</th>
+			<th data-options="field:'订单类型', width:150, align:'center', sortable:true">订单类型</th>
+			<th data-options="field:'订单关联门店编号', width:150, align:'center', sortable:true">订单关联门店编号</th>
+			<th data-options="field:'订单关联门店名称', width:200, align:'center', sortable:true">订单关联门店名称</th>
+			<th data-options="field:'订单关联店铺编号', width:150, align:'center', sortable:true">订单关联店铺编号</th>
+			<th data-options="field:'订单关联店铺名称', width:200, align:'center', sortable:true">订单关联店铺名称</th>
+		</tr>
+	</thead>
+</table>
+</body>
+</html>

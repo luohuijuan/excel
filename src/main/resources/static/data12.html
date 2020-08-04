@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>订单产生的平台收益</title>
+</head>
+<body>
+<div id="toolbar" class="x-toolbar">
+	<form id="form" action="/export/data12" method="post">
+		<div style="display: none;"><input name="target" value="订单产生的平台收益"></div>
+		<div>
+			<div><input name="订单编号" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'订单编号', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
+			<div><input name="订单类型" class="easyui-combobox" style="width: 80%;" type="text" data-options="label:'订单类型', editable:false, textField:'text', valueField:'value', data:[
+			{text:'全部',value:''},
+			{text:'O2O线上',value:'100'},
+			{text:'O2O线下',value:'101'},
+			{text:'O2O线下扫码',value:'102'},
+			{text:'B2C',value:'B2C'}
+			], value:''"></div>
+			<div><input name="时间_start" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'时间起始', editable:false"></div>
+			<div><input name="时间_end" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'时间截至', editable:false"></div>
+		</div>
+	</form>
+	<div>
+		<a href="#" onclick="$('#datagrid').datagrid({pageNumber:1, queryParams:serializeForm()});" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索查询</a>
+		<a href="#" onclick="$('#form').submit();" class="easyui-linkbutton" data-options="iconCls:'icon-save'">导出Excel</a>
+	</div>
+</div>
+<table id="datagrid" class="easyui-datagrid" title="会员数据" data-options="toolbar:'#toolbar', fit:true, singleSelect:true, url:'data12', method:'get', pagination:true, pageSize:20,
+onBeforeLoad:function(param){param = Object.assign(param, serializeForm());},
+loadFilter:function(data){return {total:data.total, rows:data.list}}">
+	<thead data-options="frozen:true">
+		<tr>
+			<th data-options="field:'订单编号', width:150, align:'center', sortable:true">订单编号</th>
+			<th data-options="field:'下单时间', width:150, align:'center', sortable:true">下单时间</th>
+			<th data-options="field:'订单金额', width:80, align:'center', sortable:true">订单金额</th>
+			<th data-options="field:'支付编号', width:155, align:'center', sortable:true">支付编号</th>
+			<th data-options="field:'支付时间', width:150, align:'center', sortable:true">支付时间</th>
+			<th data-options="field:'完成时间', width:250, align:'center', sortable:true">完成时间</th>
+			<th data-options="field:'收益金额', width:80, align:'center', sortable:true">收益金额</th>
+			<th data-options="field:'订单类型', width:100, align:'center', sortable:true">订单类型</th>
+		</tr>
+	</thead>
+	<thead>
+		<tr>
+			<th data-options="field:'订单归属门店ID', width:150, align:'center', sortable:true">订单归属门店ID</th>
+			<th data-options="field:'订单归属门店名称', width:200, align:'center', sortable:true">订单归属门店名称</th>
+			<th data-options="field:'订单归属店铺ID', width:150, align:'center', sortable:true">订单归属店铺ID</th>
+			<th data-options="field:'订单归属店铺名称', width:200, align:'center', sortable:true">订单归属店铺名称</th>
+			<th data-options="field:'O2O线上签约折扣比例', width:180, align:'center', sortable:true">O2O线上签约折扣比例%</th>
+			<th data-options="field:'O2O线上平台收益占比', width:180, align:'center', sortable:true">O2O线上平台收益占比%</th>
+			<th data-options="field:'O2O线下签约折扣比例', width:180, align:'center', sortable:true">O2O线下签约折扣比例%</th>
+			<th data-options="field:'O2O线下平台收益占比', width:180, align:'center', sortable:true">O2O线下平台收益占比%</th>
+			<th data-options="field:'B2C签约折扣比例', width:150, align:'center', sortable:true">B2C签约折扣比例%</th>
+			<th data-options="field:'B2C平台收益占比', width:150, align:'center', sortable:true">B2C平台收益占比%</th>
+		</tr>
+	</thead>
+</table>
+</body>
+</html>

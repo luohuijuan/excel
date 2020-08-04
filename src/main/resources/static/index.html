@@ -70,6 +70,7 @@ $.fn.datetimebox.defaults.formatter = function(datetime){
 			<li value="data9.html">线下扫码多个店铺、门店订单数据</li>
             <li value="data10.html">商家入驻申请</li>
             <li value="data11.html">会员美豆流水</li>
+            <li value="data12.html">订单产生的平台收益</li>
 		</ul>
 	</div>
 	<div data-options="region:'center'"></div>
@@ -82,7 +83,7 @@ $("#datalist").datalist({
 	}
 });
 $(function(){ 
-	$("#datalist").datalist("selectRow", 5);
+	$("#datalist").datalist("selectRow", 11);
 });
 function serializeForm(target) {
 	var fields = $("form").serializeArray();

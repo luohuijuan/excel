@@ -54,5 +54,6 @@ public interface DataMapper {
      */
     public List<Map<String, Object>> data10(Map<String, String> map);
     public List<Map<String, Object>> data11(Map<String, String> map);
+    public List<Map<String, Object>> data12(Map<String, String> map);
 
 }

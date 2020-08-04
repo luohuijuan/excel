@@ -117,6 +117,15 @@ public class DataController {
         return pageInfo;
     }
 
+    @RequestMapping("/data12")
+    @ResponseBody
+    public Object data12(@RequestParam  Map<String, String> map){
+        PageHelper.startPage(Integer.valueOf(map.get("page")), Integer.valueOf(map.get("rows")));
+        List<Map<String, Object>> list= dataMapper.data12(map);
+        PageInfo pageInfo=new PageInfo(list);
+        return pageInfo;
+    }
+
     @RequestMapping("/chain")
     @ResponseBody
     public Object queryChainList(@RequestParam("page") int pageIndex, @RequestParam("rows") int pageSize, @RequestParam("sort") String sortList, @RequestParam("order") String orderList){

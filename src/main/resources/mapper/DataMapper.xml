@@ -918,8 +918,8 @@ SELECT
 	member.member_id AS '会员编号',
 	member.member_name AS '会员名称',
 	member.mobile AS '会员电话',
-	chain_member.chain_id AS '会员归属门店编号',
-	chain_member.chain_name AS '会员归属门店名称',
+	member.invitation_chain_id AS '会员归属门店编号',
+	chain.chain_name AS '会员归属门店名称',
 	points_log.add_time AS '时间',
 	CASE points_log.operation_stage
 		WHEN 'login' THEN '会员登录'
@@ -943,8 +943,9 @@ SELECT
 	'' AS '订单关联店铺名称'
 FROM points_log
 LEFT JOIN member ON member.member_id = points_log.member_id
-LEFT JOIN chain_member ON chain_member.member_id = member.member_id
+LEFT JOIN chain ON chain.chain_id = member.invitation_chain_id
 WHERE points_log.points != 0
+	AND points_log.description NOT LIKE '%取消，退还美豆%'
 	AND member.member_name IS NOT NULL
 <if test="会员编号 != null and 会员编号 != ''">
 AND member.member_id = #{会员编号}
@@ -968,8 +969,8 @@ SELECT
 	member.member_id AS '会员编号',
 	member.member_name AS '会员名称',
 	member.mobile AS '会员电话',
-	chain_member.chain_id AS '会员归属门店编号',
-	chain_member.chain_name AS '会员归属门店名称',
+	member.invitation_chain_id AS '会员归属门店编号',
+	chain.chain_name AS '会员归属门店名称',
 	chain_orders.finish_time AS '时间',
 	'美豆抵现' AS '操作阶段',
 	chain_orders.points_money_amount * -1 AS '美豆变更数额',
@@ -986,7 +987,7 @@ SELECT
 	'' AS '订单关联店铺名称'
 FROM chain_orders
 LEFT JOIN member ON member.member_id = chain_orders.member_id
-LEFT JOIN chain_member ON chain_member.member_id = member.member_id
+LEFT JOIN chain ON chain.chain_id = member.invitation_chain_id
 WHERE chain_orders.orders_state = 40
 	AND chain_orders.orders_amount > 0
 	AND chain_orders.points_money_amount > 0
@@ -1012,8 +1013,8 @@ SELECT
 	member.member_id AS '会员编号',
 	member.member_name AS '会员名称',
 	member.mobile AS '会员电话',
-	chain_member.chain_id AS '会员归属门店编号',
-	chain_member.chain_name AS '会员归属门店名称',
+	member.invitation_chain_id AS '会员归属门店编号',
+	chain.chain_name AS '会员归属门店名称',
 	orders.finish_time AS '时间',
 	'美豆抵现' AS '操作阶段',
 	orders.points_money_amount * -1 AS '美豆变更数额',
@@ -1026,7 +1027,7 @@ SELECT
 	orders.store_name AS '订单关联店铺名称'
 FROM orders
 LEFT JOIN member ON member.member_id = orders.member_id
-LEFT JOIN chain_member ON chain_member.member_id = member.member_id
+LEFT JOIN chain ON chain.chain_id = member.invitation_chain_id
 WHERE orders.orders_state = 40
 	AND orders.orders_amount > 0
 	AND orders.points_money_amount > 0
@@ -1047,6 +1048,111 @@ AND orders.finish_time &lt;= #{时间_end}
 </if>
 
 ) AS x
+<if test="sort != null and sort != '' and order != null and order != ''">
+ORDER BY ${sort} ${order}
+</if>
+	</select>
+	<select id="data12"  resultType="java.util.LinkedHashMap">
+SELECT
+*
+FROM (
+SELECT
+	chain_orders.orders_sn AS '订单编号',
+	chain_orders.create_time AS '下单时间',
+	chain_orders.orders_amount + chain_orders.points_money_amount + chain_orders.coupon_amount AS '订单金额',
+	chain_orders.pay_sn AS '支付编号',
+	chain_orders.payment_time AS '支付时间',
+	chain_orders.finish_time AS '完成时间',
+	CASE chain_orders.orders_type
+		WHEN 100 THEN FORMAT((chain_orders.orders_amount + chain_orders.points_money_amount + chain_orders.coupon_amount) * O2O_online.store_sign_discount * O2O_online.platform_commission / 10000, 4)
+		WHEN 101 THEN FORMAT((chain_orders.orders_amount + chain_orders.points_money_amount + chain_orders.coupon_amount) * O2O_online.store_sign_discount * O2O_online.platform_commission / 10000, 4)
+		WHEN 102 THEN FORMAT((chain_orders.orders_amount + chain_orders.points_money_amount + chain_orders.coupon_amount) * O2O_offline.store_sign_discount * O2O_offline.platform_commission / 10000, 4)
+	END AS '收益金额',
+	CASE chain_orders.orders_type
+		WHEN 100 THEN 'O2O线上'
+		WHEN 101 THEN 'O2O线下'
+		WHEN 102 THEN 'O2O线下扫码'
+	END AS '订单类型',
+	chain_orders.chain_id AS '订单归属门店ID',
+	chain_orders.chain_name AS '订单归属门店名称',
+	'' AS '订单归属店铺ID',
+	'' AS '订单归属店铺名称',
+	O2O_online.store_sign_discount AS 'O2O线上签约折扣比例',
+	O2O_online.platform_commission AS 'O2O线上平台收益占比',
+	O2O_offline.store_sign_discount AS 'O2O线下签约折扣比例',
+	O2O_offline.platform_commission AS 'O2O线下平台收益占比',
+	'' AS 'B2C签约折扣比例',
+	'' AS 'B2C平台收益占比'
+FROM chain_orders
+LEFT JOIN
+(
+	SELECT
+		level_marketing_distribution_chain_site.*
+	FROM level_marketing_distribution_chain_site
+	WHERE level_marketing_distribution_chain_site.chain_type = 1
+) AS O2O_online
+ON O2O_online.chain_id = chain_orders.chain_id
+LEFT JOIN
+(
+	SELECT
+		level_marketing_distribution_chain_site.*
+	FROM level_marketing_distribution_chain_site
+	WHERE level_marketing_distribution_chain_site.chain_type = 2
+) AS O2O_offline
+ON O2O_offline.chain_id = chain_orders.chain_id
+WHERE chain_orders.orders_state = 40
+<if test="订单编号 != null and 订单编号 != ''">
+AND chain_orders.orders_sn LIKE CONCAT('%', #{订单编号}, '%')
+</if>
+<if test="订单类型 != null and 订单类型 != ''">
+AND chain_orders.orders_type = #{订单类型}
+</if>
+<if test="时间_start != null and 时间_start != ''">
+AND chain_orders.finish_time &gt;= #{时间_start}
+</if>
+<if test="时间_end != null and 时间_end != ''">
+AND chain_orders.finish_time &lt;= #{时间_end}
+</if>
+
+UNION ALL
+
+SELECT
+	orders.orders_sn AS '订单编号',
+	orders.create_time AS '下单时间',
+	orders.orders_amount + orders.points_money_amount + orders.coupon_amount AS '订单金额',
+	orders.pay_sn AS '支付编号',
+	orders.payment_time AS '支付时间',
+	orders.finish_time AS '完成时间',
+	FORMAT((orders.orders_amount + orders.points_money_amount + orders.coupon_amount) * B2C.store_sign_discount * B2C.platform_commission / 10000, 4) AS '收益金额',
+	'B2C' AS '订单类型',
+	'' AS '订单归属门店ID',
+	'' AS '订单归属门店名称',
+	orders.store_id AS '订单归属店铺ID',
+	orders.store_name AS '订单归属店铺名称',
+	'' AS 'O2O线上签约折扣比例',
+	'' AS 'O2O线上平台收益占比',
+	'' AS 'O2O线下签约折扣比例',
+	'' AS 'O2O线下平台收益占比',
+	B2C.store_sign_discount AS 'B2C签约折扣比例',
+	B2C.platform_commission AS 'B2C平台收益占比'
+FROM orders
+LEFT JOIN level_marketing_distribution_store_site B2C ON B2C.store_id = orders.store_id
+WHERE orders.orders_state = 40
+<if test="订单编号 != null and 订单编号 != ''">
+AND orders.orders_sn LIKE CONCAT('%', #{订单编号}, '%')
+</if>
+<if test="订单类型 != null and 订单类型 != ''">
+AND 'B2C' = #{订单类型}
+</if>
+<if test="时间_start != null and 时间_start != ''">
+AND orders.finish_time &gt;= #{时间_start}
+</if>
+<if test="时间_end != null and 时间_end != ''">
+AND orders.finish_time &lt;= #{时间_end}
+</if>
+
+) AS x
+WHERE 1=1
 <if test="sort != null and sort != '' and order != null and order != ''">
 ORDER BY ${sort} ${order}
 </if>
