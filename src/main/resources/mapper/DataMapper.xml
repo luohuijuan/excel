@@ -505,7 +505,7 @@ ORDER BY ${sort} ${order}
 
 
 	<select id="data5"  resultType="java.util.LinkedHashMap">
-    SELECT
+SELECT
 	chain.chain_name AS '门店名称',
 	x.日期 AS '日期',
 	SUM(x.销售额) AS '销售额',
@@ -519,7 +519,7 @@ LEFT JOIN
 		SELECT
 			chain_orders.chain_id,
 			DATE_FORMAT(chain_orders.create_time, '%Y-%m-%d') AS '日期',
-			SUM(chain_orders.orders_amount + chain_orders.points_money_amount) AS '销售额',
+			SUM(chain_orders.orders_amount + chain_orders.points_money_amount + chain_orders.coupon_amount) AS '销售额',
 			COUNT(DISTINCT chain_orders.orders_id) AS '订单数',
 			0 AS '新增会员',
 			SUM(chain_orders.points_money_amount) AS '美豆使用数'
@@ -530,14 +530,14 @@ LEFT JOIN
 	UNION ALL
 	(
 		SELECT
-			chain_member.chain_id,
-			DATE_FORMAT(chain_member.add_time, '%Y-%m-%d') AS '日期',
+			member.invitation_chain_id AS chain_id,
+			DATE_FORMAT(member.register_time, '%Y-%m-%d') AS '日期',
 			0 AS '销售额',
 			0 AS '订单数',
-			COUNT(DISTINCT chain_member.member_id) AS '新增会员',
+			COUNT(DISTINCT member.member_id) AS '新增会员',
 			0 AS '美豆使用数'
-		FROM chain_member
-		GROUP BY chain_member.chain_id, DATE_FORMAT(chain_member.add_time, '%Y-%m-%d')
+		FROM member
+		GROUP BY member.invitation_chain_id, DATE_FORMAT(member.register_time, '%Y-%m-%d')
 	)
 ) AS x
 ON x.chain_id = chain.chain_id
@@ -620,7 +620,7 @@ ORDER BY ${sort} ${order}
 	</select>
 	<select id="data7"  resultType="java.util.LinkedHashMap">
         SELECT
-        x.`时间/每天` AS '时间/每天',
+        x.`时间/每天` AS '时间_每天',
         SUM(x.`销售额`) AS '销售额',
         SUM(x.`订单数`) AS '订单数',
         SUM(x.`新增会员`) AS '新增会员',
