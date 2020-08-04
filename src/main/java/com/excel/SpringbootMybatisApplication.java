@@ -27,7 +27,13 @@ public class SpringbootMybatisApplication implements WebMvcConfigurer{
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry resourceHandlerRegistry) {
-		ExcelUtil.downloadPath = System.getProperty("java.io.tmpdir") +"yimeiduoDownloadExcel";
+		ExcelUtil.downloadPath = System.getProperty("java.io.tmpdir");
+		if(ExcelUtil.downloadPath.endsWith(File.separator)) {
+			ExcelUtil.downloadPath += File.separator + "yimeiduoDownloadExcel";
+		} else {
+			ExcelUtil.downloadPath += "yimeiduoDownloadExcel";
+		}
+		
 		File downloadRoot = new File(ExcelUtil.downloadPath);
 		downloadRoot.deleteOnExit();
 		downloadRoot.mkdirs();
