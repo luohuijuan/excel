@@ -700,6 +700,7 @@ ORDER BY ${sort} ${order}
         COUNT(DISTINCT points_log.member_id) AS '赠送美豆人数'
         FROM points_log
         WHERE points_log.points > 0
+		AND points_log.description != 'pointsmoney'
         GROUP BY DATE_FORMAT(points_log.add_time, '%Y-%m-%d')
         ) AS x
         WHERE 1=1
