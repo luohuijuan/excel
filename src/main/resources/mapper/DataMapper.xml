@@ -758,10 +758,10 @@ ORDER BY ${sort} ${order}
 		AND chain_orders.create_time BETWEEN #{创建订单开始时间} AND #{创建订单结束时间}
 		</if>
 		<if test="会员名称 != null and 会员名称 != ''">
-			AND member.member_name=#{会员名称}
+			AND member.member_name LIKE CONCAT('%', #{会员名称}, '%')
 		</if>
 		<if test="门店名称 != null and 门店名称 != ''">
-		AND chain.chain_name=#{门店名称}
+		AND chain.chain_name LIKE CONCAT('%', #{门店名称}, '%')
 		</if>
 		<if test="会员电话号码 != null and 会员电话号码 != ''">
 			AND member.mobile=#{会员电话号码}
@@ -837,9 +837,6 @@ WHERE 1=1
 		<if test="chain_id != null and chain_id != ''">
 		  AND t.chain_id=#{chain_id}
 		</if>
-		<if test="门店名称 != null and 门店名称 != ''">
-			AND t.门店名称=#{门店名称}
-		</if>
 		<if test="订单编号 != null and 订单编号 != ''">
 			AND t.订单编号=#{订单编号}
 		</if>
@@ -851,6 +848,9 @@ WHERE 1=1
 		</if>
 		<if test="订单状态 != null and 订单状态 != ''">
 			AND t.订单状态=#{订单状态}
+		</if>
+		<if test="门店名称 != null and 门店名称 != ''">
+			AND t.门店名称 LIKE CONCAT('%', #{门店名称}, '%')
 		</if>
 ORDER BY t.chain_id DESC
 </select>

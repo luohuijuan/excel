@@ -11,12 +11,10 @@
 		<div>
 			<div><input name="chain_id" class="easyui-numberbox" style="width: 80%;" type="text" data-options="label:'门店编号', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
 			<div><input name="门店名称" class="easyui-textbox" style="width: 80%;" type="text" data-options="label:'门店名称', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]"></div>
-			<div>
-				<input name="创建订单开始时间" type="text" class="easyui-datebox"  style="width: 80%;" type="text" data-options="label:'开始时间', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]">
-			</div>
-			<div>
-				<input name="创建订单结束时间" type="text" class="easyui-datebox"  style="width: 80%;" type="text" data-options="label:'结束时间', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]">
-			</div>
+
+			<div><input name="创建订单开始时间" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'开始时间', editable:false"></div>
+			<div><input name="创建订单结束时间" value="${notices.release_time}" class="easyui-datetimebox" style="width: 80%;" type="text" data-options="label:'结束时间', editable:false"></div>
+
 			<div>
 			<select class="easyui-combobox" name="订单类型" style="width:410px;"  data-options="label:'订单类型', icons:[{iconCls:'icon-clear', handler:function(event){$(event.data.target).textbox('clear');}}]">
 				<option value=""></option>
