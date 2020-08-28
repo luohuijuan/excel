@@ -38,8 +38,8 @@
 
     </select>
 	<select id="data1"  resultType="java.util.LinkedHashMap">
-SELECT 
-	*
+SELECT
+	x.*,m.mobile as '上级手机号'
 FROM
 (
 	SELECT
@@ -61,6 +61,8 @@ FROM
 			WHEN 70 THEN '待收货'
 			WHEN 80 THEN '待评价'
 		END AS '订单状态',
+		chain.chain_id AS '门店id',
+		chain.area_id3 AS '区域id',
 		chain.chain_name AS '归属门店名称',
 		store.store_name AS '归属店铺名称',
 		goods_common.common_id AS '商品id',
@@ -72,6 +74,7 @@ FROM
 		store.store_name AS '店铺名称',
 		chain_orders.receiver_message AS '买家留言',
 		member.member_id AS '买家编号',
+		level_marketing_relation.relation_parent_member_id AS '直属上级id',
 		member.mobile AS '买家手机号'
 	FROM chain_orders
 	LEFT JOIN chain_orders_goods ON chain_orders_goods.orders_id = chain_orders.orders_id
@@ -79,7 +82,8 @@ FROM
 	LEFT JOIN chain ON chain.chain_id = chain_orders.chain_id
 	LEFT JOIN store ON store.store_id = chain.store_id
 	LEFT JOIN member ON member.member_id = chain_orders.member_id
-	WHERE 1=1
+	LEFT JOIN level_marketing_relation on member.member_id=level_marketing_relation.relation_member_id
+		WHERE 1=1
 	<if test="订单类型 != null and 订单类型 != ''">
 	AND chain_orders.orders_type = #{订单类型}
 	</if>
@@ -124,6 +128,8 @@ FROM
 			WHEN 80 THEN '待评价'
 		END AS '订单状态',
 		'' AS '归属门店名称',
+		'' AS '门店id',
+		'' as '区域id',
 		store.store_name AS '归属店铺名称',
 		goods_common.common_id AS '商品id',
 		goods_common.goods_name AS '商品名称',
@@ -134,13 +140,15 @@ FROM
 		store.store_name AS '店铺名称',
 		orders.receiver_message AS '买家留言',
 		member.member_id AS '买家编号',
+		level_marketing_relation.relation_parent_member_id AS '直属上级id',
 		member.mobile AS '买家手机号'
 	FROM orders
 	LEFT JOIN orders_goods ON orders_goods.orders_id = orders.orders_id
 	LEFT JOIN goods_common ON goods_common.common_id = orders_goods.common_id
 	LEFT JOIN store ON store.store_id = orders.store_id
 	LEFT JOIN member ON member.member_id = orders.member_id
-	WHERE 1=1
+	LEFT JOIN level_marketing_relation on member.member_id=level_marketing_relation.relation_member_id
+		WHERE 1=1
 	<if test="订单类型 != null and 订单类型 != '' and 订单类型 != 999">
 	AND 1=2
 	</if>
@@ -168,7 +176,7 @@ FROM
 	<if test="买家手机号 != null and 买家手机号 != ''">
 	AND member.mobile LIKE CONCAT('%', #{买家手机号}, '%')
 	</if>
-) AS x
+) AS x LEFT JOIN member as m on x.`直属上级id`=m.member_id
 WHERE (x.订单类型 = 'B2C' OR x.订单类型 = 'O2O线上')
 <if test="sort != null and sort != '' and order != null and order != ''">
 ORDER BY ${sort} ${order}
@@ -241,8 +249,8 @@ ORDER BY ${sort} ${order}
 </if>
 	</select>
 	<select id="data3"  resultType="java.util.LinkedHashMap">
-SELECT 
-	*
+SELECT
+	x.*,m.mobile as '上级手机号'
 FROM
 (
 	SELECT
@@ -264,6 +272,8 @@ FROM
 				WHEN 102 THEN '线下扫码'
 			END
 		) AS '订单类型',
+		chain.chain_id AS '门店id',
+		chain.area_id3 as '区域id',
 		chain.chain_name AS '门店名称',
 		store.store_name AS '店铺名称',
 		goods_common.common_id AS '商品id',
@@ -274,6 +284,7 @@ FROM
 		chain_orders.points_money_amount AS '美豆抵扣',
 		chain_orders.receiver_message AS '买家留言',
 		member.member_id AS '买家编号',
+		level_marketing_relation.relation_parent_member_id AS '直属上级id',
 		member.mobile AS '买家手机号'
 	FROM chain_orders
 	LEFT JOIN chain_orders_goods ON chain_orders_goods.orders_id = chain_orders.orders_id
@@ -281,7 +292,8 @@ FROM
 	LEFT JOIN chain ON chain.chain_id = chain_orders.chain_id
 	LEFT JOIN store ON store.store_id = chain.store_id
 	LEFT JOIN member ON member.member_id = chain_orders.member_id
-	WHERE 1=1
+	LEFT JOIN level_marketing_relation on member.member_id=level_marketing_relation.relation_member_id
+		WHERE 1=1
 	<if test="订单编号 != null and 订单编号 != ''">
 	AND chain_orders.orders_sn LIKE CONCAT('%', #{订单编号}, '%')
 	</if>
@@ -334,6 +346,8 @@ FROM
 			WHEN 70 THEN '待收货'
 			WHEN 80 THEN '待评价'
 		END AS '订单状态',
+		'' AS '门店id',
+		'' as '区域id',
 		'' AS '门店名称',
 		store.store_name AS '店铺名称',
 		goods_common.common_id AS '商品id',
@@ -344,12 +358,14 @@ FROM
 		orders.points_money_amount AS '美豆抵扣',
 		orders.receiver_message AS '买家留言',
 		member.member_id AS '买家编号',
-		member.mobile AS '买家手机号'
+		level_marketing_relation.relation_parent_member_id AS '直属上级id',
+	member.mobile AS '买家手机号'
 	FROM orders
 	LEFT JOIN orders_goods ON orders_goods.orders_id = orders.orders_id
 	LEFT JOIN goods_common ON goods_common.common_id = orders_goods.common_id
 	LEFT JOIN store ON store.store_id = orders.store_id
 	LEFT JOIN member ON member.member_id = orders.member_id
+	LEFT JOIN level_marketing_relation on member.member_id=level_marketing_relation.relation_member_id
 	WHERE 1=1
 	<if test="订单编号 != null and 订单编号 != ''">
 	AND orders.orders_sn LIKE CONCAT('%', #{订单编号}, '%')
@@ -385,7 +401,7 @@ FROM
 	AND orders.create_time &lt;= #{下单时间_end}
 	</if>
 </if>
-) AS x
+) AS x LEFT JOIN member as m on x.`直属上级id`=m.member_id
 WHERE x.订单类型 IN ('B2C', 'O2O线上')
 <if test="订单类型 != null and 订单类型 != ''">
 AND x.订单类型 = #{订单类型}
@@ -708,12 +724,19 @@ ORDER BY ${sort} ${order}
         order by   x.`时间/每天` desc
 	</select>
 	<select id="data8"  resultType="java.util.LinkedHashMap">
-		SELECT
+		select
+		x.*,m.mobile as '上级手机号'
+		from
+		( SELECT
 		chain_orders.create_time AS '创建订单时间',
 		-- seller.seller_name AS '商家名称',
 		-- store.store_name AS '店铺名称',
+		chain.chain_id AS '门店id',
+		chain.area_id3 as '区域id',
 		chain.chain_name AS '门店名称',
 		member.member_name AS '会员名称',
+		member.member_id AS '买家编号',
+		level_marketing_relation.relation_parent_member_id AS '直属上级id',
 		member.mobile AS '会员电话号码',
 		CASE chain_orders.orders_type
 		WHEN 100 THEN 'O2O线上'
@@ -752,16 +775,17 @@ ORDER BY ${sort} ${order}
 		LEFT JOIN store ON store.store_id = chain.store_id
 		LEFT JOIN seller ON seller.seller_id = store.seller_id
 		LEFT JOIN member ON member.member_id = chain_orders.member_id
-		WHERE chain_orders.orders_type = 102
+		LEFT JOIN level_marketing_relation on member.member_id=level_marketing_relation.relation_member_id
+		where 1=1
 		AND chain.chain_name != ''
 		<if test="创建订单开始时间 != null and 创建订单开始时间 != ''and 创建订单结束时间 != null and 创建订单结束时间 != ''">
-		AND chain_orders.create_time BETWEEN #{创建订单开始时间} AND #{创建订单结束时间}
+			AND chain_orders.create_time BETWEEN #{创建订单开始时间} AND #{创建订单结束时间}
 		</if>
 		<if test="会员名称 != null and 会员名称 != ''">
 			AND member.member_name LIKE CONCAT('%', #{会员名称}, '%')
 		</if>
 		<if test="门店名称 != null and 门店名称 != ''">
-		AND chain.chain_name LIKE CONCAT('%', #{门店名称}, '%')
+			AND chain.chain_name LIKE CONCAT('%', #{门店名称}, '%')
 		</if>
 		<if test="会员电话号码 != null and 会员电话号码 != ''">
 			AND member.mobile=#{会员电话号码}
@@ -778,15 +802,18 @@ ORDER BY ${sort} ${order}
 		<if test="订单状态 != null and 订单状态 != ''">
 			AND chain_orders.orders_state=#{订单状态}
 		</if>
-
 		ORDER BY chain.chain_name, chain_orders.create_time
+		)as x LEFT JOIN member as m on x.`直属上级id`=m.member_id
+		WHERE x.`订单类型` ='O2O线下扫码'
+
 	</select>
 
 	<select id="data9"  resultType="java.util.LinkedHashMap">
 		SELECT t.*,FLOOR(t.`现金支付金额`*l.alone_consumer_rate)/100 as '订单消费返美豆'  from
 (SELECT
   chain.chain_id,
-	chain.chain_name AS '门店名称',
+		chain.area_id3 as '区域id',
+		chain.chain_name AS '门店名称',
 	chain_orders.create_time AS '创建订单时间',
 	CASE chain_orders.orders_type
 		WHEN 100 THEN 'O2O线上'
